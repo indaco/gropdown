@@ -1,0 +1,19 @@
+package gropdown
+
+templ container(dropdown *Dropdown) {
+	<div
+		class={ gddContainer() }
+		data-position={ dropdown.Position.String() }
+	>
+		@button(dropdown.Button)
+		@content(dropdown)
+	</div>
+}
+
+css gddContainer() {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-smooth: auto;
+	position: relative;
+	display: inline-block;
+}

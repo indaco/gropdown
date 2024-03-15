@@ -1,0 +1,36 @@
+package gropdown
+
+templ itemsList(dropdown *Dropdown) {
+	<ul
+		role="menu"
+		class={ gddUL() }
+		if dropdown.Open || dropdown.KeepOpen {
+			data-state="open"
+		} else {
+			data-state="close"
+		}
+		if dropdown.Absolute {
+			data-position="absolute"
+		} else {
+			data-position="relative"
+		}
+	>
+		for _, item := range dropdown.Items {
+			@entry(item)
+		}
+	</ul>
+}
+
+css gddUL() {
+	overflow: hidden;
+	list-style: none;
+	width: var(--gdd-list-w);
+	max-width: var(--gdd-list-max-w);
+	margin: var(--gdd-list-my) var(--gdd-list-mx);
+	padding: var(--gdd-list-py) var(--gdd-list-px);
+	background-color: var(--gdd-list-bg-color);
+	border-width: var(--gdd-list-border-width);
+	border-style: var(--gdd-list-border-style);
+	border-color: var(--gdd-list-border-color);
+	border-radius: var(--gdd-list-border-radius);
+}

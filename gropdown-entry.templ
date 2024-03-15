@@ -1,0 +1,59 @@
+package gropdown
+
+templ entry(item DropdownItem) {
+	<li role="none">
+		if item.Href != "" {
+			<a
+				role="menuitem"
+				class={ gddLI_Item() }
+				href={ templ.SafeURL(item.Href) }
+				if item.External {
+					data-external="true"
+				}
+				{ item.Attrs... }
+			>
+				if item.Icon != "" {
+					<div class={ gddLI_ItemIcon() }>
+						@templ.Raw(item.Icon)
+					</div>
+				}
+				{ item.Label }
+			</a>
+		} else {
+			<button role="menuitem" class={ gddLI_Item() } { item.Attrs... }>
+				if item.Icon != "" {
+					<div class={ gddLI_ItemIcon() }>
+						@templ.Raw(item.Icon)
+					</div>
+				}
+				{ item.Label }
+			</button>
+		}
+	</li>
+}
+
+css gddLI_Item() {
+	position: relative;
+	display: flex;
+	width: 100%;
+	text-decoration: none;
+	gap: var(--gdd-item-icon-space);
+	padding: var(--gdd-item-py) var(--gdd-item-px);
+	color: var(--gdd-item-color);
+	font-size: var(--gdd-item-font-size);
+	line-height: var(--gdd-item-line-height);
+	letter-spacing: var(--gdd-item-letter-spacing);
+	background-color: var(--gdd-item-bg-color);
+	border-width: var(--gdd-item-border-width);
+	border-style: var(--gdd-item-border-style);
+	border-color: var(--gdd-item-border-color);
+	border-radius: var(--gdd-item-border-radius);
+}
+
+css gddLI_ItemIcon() {
+	display: inline-flex;
+	align-items: center;
+	flex-shrink: 0;
+	width: 1.25em;
+	height: 1.25em;
+}

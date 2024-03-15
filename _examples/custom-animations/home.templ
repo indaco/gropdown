@@ -1,0 +1,46 @@
+package main
+
+import "github.com/indaco/gropdown"
+
+templ HomePage(dropdown *gropdown.DropdownBuilder) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>gropdown - custom animations</title>
+			<!-- inject dropdown styles -->
+			@gropdown.GropdownCSS()
+			<!-- use [animate.css](https://animate.style/) for additional animation -->
+			<link
+				rel="stylesheet"
+				href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+			/>
+			<!-- set css vars for dropdown button icon animations -->
+			<style type="text/css">
+				:root {
+					--gdd-button-animation-open-name: flash;
+					--gdd-button-animation-close-name: tada;
+
+					--gdd-content-animation-name: zoomIn;
+
+				}
+
+				.parent-container {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					height: 100vh;
+				}
+			</style>
+		</head>
+		<body class="parent-container">
+			<div class="centered">
+				<!-- display the dropdown -->
+				@dropdown.Render()
+			</div>
+			<!-- inject dropdown javascript -->
+			@gropdown.GropdownJS(dropdown.Dropdown())
+		</body>
+	</html>
+}

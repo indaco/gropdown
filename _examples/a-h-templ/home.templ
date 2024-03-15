@@ -1,0 +1,33 @@
+package main
+
+import "github.com/indaco/gropdown"
+
+templ HomePage(dropdown *gropdown.DropdownBuilder) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>gropdown - a-h/templ</title>
+			<!-- inject dropdown styles -->
+			@gropdown.GropdownCSS()
+			<!-- styles -->
+			<style type="text/css">
+				.parent-container {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					height: 100vh;
+				}
+			</style>
+		</head>
+		<body class="parent-container">
+			<div class="centered">
+				<!-- display the dropdown -->
+				@dropdown.Render()
+			</div>
+			<!-- inject dropdown javascript -->
+			@gropdown.GropdownJS(dropdown.Dropdown())
+		</body>
+	</html>
+}

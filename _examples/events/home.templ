@@ -1,0 +1,26 @@
+package main
+
+import "github.com/indaco/gropdown"
+
+script console() {
+    console.log("I'm the console script in templ file")
+}
+
+templ HomePage(dropdown *gropdown.DropdownBuilder) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>gropdown - a-h/templ</title>
+			<!-- inject dropdown styles -->
+			@gropdown.GropdownCSS()
+		</head>
+		<body>
+			<!-- display the dropdown -->
+			@dropdown.Render()
+			<!-- inject dropdown javascript -->
+			@gropdown.GropdownJS(dropdown)
+		</body>
+	</html>
+}

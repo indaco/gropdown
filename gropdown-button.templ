@@ -1,0 +1,72 @@
+package gropdown
+
+const defaultButtonIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width="16" height="16" stroke-width="1.5" stroke="currentColor">
+  <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+</svg>
+`
+
+templ button(btn DropdownButton) {
+	<button
+		id={ buttonId(btn.Label) }
+		class={ gddButton(), templ.KV(gddButton_IconOnly(), btn.Label == "") }
+		aria-label={ btn.Label }
+		aria-haspopup="true"
+		aria-expanded="false"
+		aria-controls={ menuId(btn.Label) }
+		{ btn.Attrs... }
+	>
+		if btn.Label != "" {
+			{ btn.Label }
+		}
+		<span class={ gttSrOnly() }>Open/Close icon</span>
+		<span class={ gddButton_Icon() }>
+			if btn.Icon != "" {
+				@templ.Raw(btn.Icon)
+			} else {
+				@templ.Raw(defaultButtonIcon)
+			}
+		</span>
+	</button>
+}
+
+css gddButton() {
+	cursor: pointer;
+	min-width: var(--gdd-button-min-w);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--gdd-button-icon-space);
+	margin: 0;
+	padding: var(--gdd-button-py) var(--gdd-button-px);
+	color: var(--gdd-button-color);
+	border-width: var(--gdd-button-border-width);
+	border-style: var(--gdd-button-border-style);
+	border-color: var(--gdd-button-border-color);
+	border-radius: var(--gdd-button-border-radius);
+	background-color: var(--gdd-button-bg-color);
+	font-family: var(--gdd-button-font-family);
+	font-size: var(--gdd-button-font-size);
+	font-weight: var(--gdd-button-font-weight);
+	line-height: var(--gdd-button-line-height);
+	letter-spacing: var(--gdd-button-letter-spacing);
+	text-transform: none;
+	text-decoration-line: var(--_text-decoration-line);
+	transition: var(--gdd-button-transition-property) var(--gdd-button-transition-duration) var(--gdd-button-transition-timing-function);
+}
+
+css gddButton_Icon() {
+	display: inline-flex;
+	align-items: center;
+	flex-shrink: 0;
+	width: 1em;
+	height: 1em;
+}
+
+css gddButton_IconOnly() {
+	min-width: 2.5rem;
+	padding: 0;
+	width: 2.5rem;
+	height: 2.5rem;
+	border-radius: 1e5px;
+	aspect-ratio: 1;
+}

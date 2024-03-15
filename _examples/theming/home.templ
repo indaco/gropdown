@@ -1,0 +1,50 @@
+package main
+
+import "github.com/indaco/gropdown"
+
+templ HomePage(dropdown *gropdown.DropdownBuilder) {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>gropdown - theming</title>
+			<!-- inject dropdown styles -->
+			@gropdown.GropdownCSS()
+			<!-- set css vars for theming -->
+			<style type="text/css">
+        :root {
+          --gdd-button-color: #312e81;
+          --gdd-button-bg-color: #eef2ff;
+          --gdd-button-bg-color-hover: #e0e7ff;
+          --gdd-button-ring-width: 2px;
+          --gdd-button-ring-style: solid;
+          --gdd-button-ring-offset: 1px;
+          --gdd-button-ring-color: #6366f1;
+
+          --gdd-content-bg-color: #eef2ff;
+          --gdd-content-border-color: #e0e7ff;
+
+          --gdd-item-bg-color-hover: #c7d2fe;
+
+          --gdd-item-divider-color: #312e81;
+        }
+
+				.parent-container {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					height: 100vh;
+        }
+      </style>
+		</head>
+		<body class="parent-container">
+			<div class="centered">
+				<!-- display the dropdown -->
+				@dropdown.Render()
+			</div>
+			<!-- inject toast javascript -->
+			@gropdown.GropdownJS(dropdown.Dropdown())
+		</body>
+	</html>
+}
