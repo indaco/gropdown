@@ -23,7 +23,7 @@ Built with [templ](https://github.com/a-h/templ) library for seamless integratio
 ## Features
 
 - **Accessible**: Fully compliant with the [WAI-ARIA Menu Button Design Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/), to ensure accessibility for all users.
-- **No External Dependencies**: Built without relying on any external libraries or frameworks.
+- **No External Dependencies**: No External Dependencies: Built with native Go and the `templ` library, requiring no external dependencies.
 - **Configurable**: The component offers various configuration options to customize its behavior (e.g. positioning, open by default...)
 - **Themeable**: Supports theming via CSS variables, allowing easy customization of appearance. Comes with built-in support for light and dark modes, as well as the ability to define custom themes using the `data-theme` attribute.
 - **Versatile**: Items can be buttons or links (`<a>`). When a link item is marked as _external_, a visual icon will be added to indicate it.
