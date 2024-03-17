@@ -9,8 +9,8 @@ import "github.com/a-h/templ"
 
 func GropdownJS(dropdown *Dropdown) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_GropdownJS_5151`,
-		Function: `function __templ_GropdownJS_5151(dropdown){// Utility function to check if a value is null or undefined
+		Name: `__templ_GropdownJS_c0e9`,
+		Function: `function __templ_GropdownJS_c0e9(dropdown){// Utility function to check if a value is null or undefined
     function isNullish(value) {
         return value === null || value === undefined;
     }
@@ -508,8 +508,13 @@ func GropdownJS(dropdown *Dropdown) templ.ComponentScript {
                 item.addEventListener('click', onItemClick)
                 listGroups[componentId].push(item)
 
-                const itemContent = item.textContent?.trim().toLowerCase()[0]
-                if (itemContent) firstChars[componentId].push(itemContent)
+                const extractFirstChar = (item) => {
+                    const textContent = item.textContent?.split('\n').pop().trim();
+                    const firstChar = textContent ? textContent.trim().toLowerCase()[0] : null;
+                    return firstChar;
+                };
+                const contentFirstChar = extractFirstChar(item)
+                if (contentFirstChar) firstChars[componentId].push(contentFirstChar)
 
                 if (!firstItem[componentId]) {
                     firstItem[componentId] = item
@@ -571,7 +576,7 @@ func GropdownJS(dropdown *Dropdown) templ.ComponentScript {
         }
     });
 }`,
-		Call:       templ.SafeScript(`__templ_GropdownJS_5151`, dropdown),
-		CallInline: templ.SafeScriptInline(`__templ_GropdownJS_5151`, dropdown),
+		Call:       templ.SafeScript(`__templ_GropdownJS_c0e9`, dropdown),
+		CallInline: templ.SafeScriptInline(`__templ_GropdownJS_c0e9`, dropdown),
 	}
 }

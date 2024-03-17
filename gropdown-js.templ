@@ -499,8 +499,13 @@ script GropdownJS(dropdown *Dropdown) {
                 item.addEventListener('click', onItemClick)
                 listGroups[componentId].push(item)
 
-                const itemContent = item.textContent?.trim().toLowerCase()[0]
-                if (itemContent) firstChars[componentId].push(itemContent)
+                const extractFirstChar = (item) => {
+                    const textContent = item.textContent?.split('\n').pop().trim();
+                    const firstChar = textContent ? textContent.trim().toLowerCase()[0] : null;
+                    return firstChar;
+                };
+                const contentFirstChar = extractFirstChar(item)
+                if (contentFirstChar) firstChars[componentId].push(contentFirstChar)
 
                 if (!firstItem[componentId]) {
                     firstItem[componentId] = item
