@@ -73,8 +73,26 @@ or customize the dropdown with options:
 ```go
 // Here we set the Dropdown menu opened as default and the content positioned as absolute instead of relative.
 dropdown := gropdown.NewDropdownBuilder().SetOpen(true).SetPositionAbsolute(true)
+// Here we set the Dropdown menu opened as default and the content positioned on top.
+dropdown := gropdown.NewDropdownBuilder().SetOpen(true).SetPosition(gropdown.Top)
 dropdown.WithButton(button).WithItems(items)
 ```
+
+## Add gropdown CSS and Javascript
+
+`gropdown` leverages the `templ` library's features, including CSS Components and JavaScript Templates, to encapsulate all necessary styling and functionality without relying on external dependencies.
+
+- `GropdownCSS`: it supplies the required CSS, encapsulating the visual design and layout specifics of the component.
+- `GropdownJS`: it provides the JavaScript logic essential for dynamic behaviors such as displaying, keyboard navigation and interaction with the component.
+
+To facilitate integration with Go's `template/html` standard library, `gropdown` includes a dedicated HTMLGenerator type to seamlessly integrate the component into web applications built with Go's `html/template standard` library.
+
+There are methods acting as wrappers to the templ's `templ.ToGoHTML`, generate the necessary HTML to be embedded them into server-rendered pages:
+
+- `GropdownCSSToGoHTML`: render the `GropdownCSS` component into a `template.HTML` value.
+- `GropdownJSToGoHTML`: render the `GropdownJS` component into a `template.HTML` value.
+
+> Note: refer to the [Examples](#examples) section to see how to use `gropdown` with templ and `html/template`.
 
 ## A11Y
 
@@ -101,8 +119,8 @@ Ensure that proper ARIA attributes are used to convey the state and role of the 
 
 Dropdown is themeable using CSS variables (prefix `gdd`) to customize the appearance according to your design.
 
-By default, it supports both light and dark modes. In addition to the built-in modes, you can define your 
-own custom themes using the `data-theme` attribute. Simply add a `data-theme` attribute to the root element of your application 
+By default, it supports both light and dark modes. In addition to the built-in modes, you can define your
+own custom themes using the `data-theme` attribute. Simply add a `data-theme` attribute to the root element of your application
 and define the corresponding CSS variables for your custom theme.
 
 Here below is the list of all CSS variables defined and their default values:
