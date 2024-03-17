@@ -78,7 +78,7 @@ dropdown := gropdown.NewDropdownBuilder().SetOpen(true).SetPosition(gropdown.Top
 dropdown.WithButton(button).WithItems(items)
 ```
 
-## Add gropdown CSS and Javascript
+### Add gropdown CSS and Javascript
 
 `gropdown` leverages the `templ` library's features, including CSS Components and JavaScript Templates, to encapsulate all necessary styling and functionality without relying on external dependencies.
 
@@ -178,29 +178,29 @@ Here below is the list of all CSS variables defined and their default values:
 
 | CSS Variable                | Default Value                                                          | Description                                                       |
 |-----------------------------|------------------------------------------------------------------------|-------------------------------------------------------------------|
-| `--gdd-item-px`             | 0.375rem                                                               | Padding on the x-axis of the dropdown item                        |                                                                
-| `--gdd-item-py`             | 0.375rem                                                               | Padding on the y-axis of the dropdown item                        |                                                                
-| `--gdd-item-icon-space`     | 1ch                                                                    | Space between the dropdown item label and icon                    |                                                                
-| `--gdd-item-color`          | ![Color Preview](https://via.placeholder.com/20/f3f4f6?text=+) #f3f4f6 | Color of the item text                                            | 
+| `--gdd-item-px`             | 0.375rem                                                               | Padding on the x-axis of the dropdown item                        |
+| `--gdd-item-py`             | 0.375rem                                                               | Padding on the y-axis of the dropdown item                        |
+| `--gdd-item-icon-space`     | 1ch                                                                    | Space between the dropdown item label and icon                    |
+| `--gdd-item-color`          | ![Color Preview](https://via.placeholder.com/20/f3f4f6?text=+) #f3f4f6 | Color of the item text                                            |
 | `--gdd-item-color-hover`    | ![Color Preview](https://via.placeholder.com/20/f3f4f6?text=+) #f3f4f6 | Color of the item text on hover                                   |
-| `--gdd-item-font-family`    | inherit                                                                | Font family of the dropdown item label                            |                                                                
-| `--gdd-item-font-size`      | 1rem                                                                   | Font size of the dropdown item label                              |                                                                
-| `--gdd-item-font-weight`    | 500                                                                    | Font weight of the dropdown item label                            |                                                                
-| `--gdd-item-line-height`    | 1.25                                                                   | Line height of the dropdown item label                            |                                                                
-| `--gdd-item-letter-spacing` | 0.025em                                                                | Letter spacing of the dropdown item label                         |                                                                
+| `--gdd-item-font-family`    | inherit                                                                | Font family of the dropdown item label                            |
+| `--gdd-item-font-size`      | 1rem                                                                   | Font size of the dropdown item label                              |
+| `--gdd-item-font-weight`    | 500                                                                    | Font weight of the dropdown item label                            |
+| `--gdd-item-line-height`    | 1.25                                                                   | Line height of the dropdown item label                            |
+| `--gdd-item-letter-spacing` | 0.025em                                                                | Letter spacing of the dropdown item label                         |
 | `--gdd-item-bg-color`       | transparent                                                            | Background color of the item                                      |
 | `--gdd-item-bg-color-hover` | ![Color Preview](https://via.placeholder.com/20/030712?text=+) #030712 | Background color of the item on hover                             |
-| `--gdd-item-border-width`   | 1px                                                                    | Border width of the dropdown item                                 |                                                                
-| `--gdd-item-border-style`   | solid                                                                  | Border style of the dropdown item                                 |                                                                
-| `--gdd-item-border-color`   | transparent                                                            | Border color of the dropdown item                                 |                                                                
-| `--gdd-item-border-radius`  | 0.25rem                                                                | Border radius of the dropdown item                                |                                                                
-| `--gdd-item-ring-width`     | 1px                                                                    | Width of the focus ring around the dropdown item                  |                                                                
-| `--gdd-item-ring-style`     | solid                                                                  | Style of the focus ring around the dropdown item                  |                                                               
-| `--gdd-item-ring-offset`    | 0                                                                      | Offset of the focus ring around the dropdown item                 |                                                                
-| `--gdd-item-ring-color`     | transparent                                                            | Color of the focus ring around the dropdown item                  |                                                                
-| `--gdd-item-divider-width`  | 1px                                                                    | Width of the divider between dropdown items                       |                                                                
+| `--gdd-item-border-width`   | 1px                                                                    | Border width of the dropdown item                                 |
+| `--gdd-item-border-style`   | solid                                                                  | Border style of the dropdown item                                 |
+| `--gdd-item-border-color`   | transparent                                                            | Border color of the dropdown item                                 |
+| `--gdd-item-border-radius`  | 0.25rem                                                                | Border radius of the dropdown item                                |
+| `--gdd-item-ring-width`     | 1px                                                                    | Width of the focus ring around the dropdown item                  |
+| `--gdd-item-ring-style`     | solid                                                                  | Style of the focus ring around the dropdown item                  |
+| `--gdd-item-ring-offset`    | 0                                                                      | Offset of the focus ring around the dropdown item                 |
+| `--gdd-item-ring-color`     | transparent                                                            | Color of the focus ring around the dropdown item                  |
+| `--gdd-item-divider-width`  | 1px                                                                    | Width of the divider between dropdown items                       |
 | `--gdd-item-divider-style`  | solid                                                                  | Style of the divider between dropdown items (e.g., solid, dashed) |
-| `--gdd-item-divider-color`  | ![Color Preview](https://via.placeholder.com/20/030712?text=+) #4b5563 | Color of the item divider                                         | 
+| `--gdd-item-divider-color`  | ![Color Preview](https://via.placeholder.com/20/030712?text=+) #4b5563 | Color of the item divider                                         |
 
 
 ## Examples
