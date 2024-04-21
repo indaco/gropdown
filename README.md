@@ -16,6 +16,13 @@ A fully accessible, configurable and themeable server-rendered dropdown componen
     <a href="https://pkg.go.dev/github.com/indaco/gropdown/" target="_blank">
         <img src="https://pkg.go.dev/badge/github.com/indaco/gropdown/.svg" alt="go reference" />
     </a>
+    &nbsp;
+    <a href="https://jetpack.io/devbox/docs/contributor-quickstart/" target="_blank">
+      <img
+          src="https://jetpack.io/img/devbox/shield_galaxy.svg"
+          alt="Built with Devbox"
+      />
+    </a>
 </p>
 
 Built with [templ](https://github.com/a-h/templ) library for seamless integration with Go-based web frontends.
