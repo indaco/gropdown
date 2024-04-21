@@ -4,15 +4,10 @@ templ itemsList(dropdown *Dropdown) {
 	<ul
 		role="menu"
 		class={ gddUL() }
-		if dropdown.Open || dropdown.KeepOpen {
+		if dropdown.Open {
 			data-state="open"
 		} else {
 			data-state="close"
-		}
-		if dropdown.Absolute {
-			data-position="absolute"
-		} else {
-			data-position="relative"
 		}
 	>
 		for _, item := range dropdown.Items {
