@@ -2,288 +2,349 @@ package gropdown
 
 templ GropdownCSS() {
 	<style type="text/css">
-	    * {
-            box-sizing: border-box;
-            border-width: 0;
-            border-style: solid;
-        }
+    * {
+      box-sizing: border-box;
+      border-width: 0;
+      border-style: solid;
+    }
 
-        :root {
-            /* Dropdown Button */
-            --gdd-button-min-w: 4.5em;
-            --gdd-button-py: 1ch;
-            --gdd-button-px: 2ch;
-            --gdd-button-icon-space: 0.5ch;
+    :root {
+      --gdd-color-space: oklab;
 
-            --gdd-button-font-size: 1rem;
-            --gdd-button-font-family: inherit;
-            --gdd-button-font-weight: 500;
-            --gdd-button-line-height: 1.25;
-            --gdd-button-letter-spacing: 0.025em;
+      /* - Color Shades - */
+      --gdd-primary: hsl(215deg 16.3% 46.9%);
 
-            --gdd-button-border-width: 1px;
-            --gdd-button-border-style: solid;
-            --gdd-button-border-radius: 0.25rem;
+      --gdd-primary-10: color-mix(
+          in var(--gdd-color-space),
+          var(--gdd-primary) 10%,
+          white
+      );
 
-            --gdd-button-transition-property: background;
-            --gdd-button-transition-duration: 300ms;
-            --gdd-button-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      --gdd-primary-20: color-mix(
+          in var(--gdd-color-space),
+          var(--gdd-primary) 30%,
+          white
+      );
 
-            --gdd-button-ring-width: 1px;
-            --gdd-button-ring-style: solid;
-            --gdd-button-ring-offset: 1px;
+      --gdd-primary-30: color-mix(
+          in var(--gdd-color-space),
+          var(--gdd-primary) 50%,
+          white
+      );
 
-            --gdd-button-animation-open-name: flipOutX;
-            --gdd-button-animation-close-name: flipInX;
+      --gdd-primary-40: color-mix(
+          in var(--gdd-color-space),
+          var(--gdd-primary) 70%,
+          white
+      );
 
-            /* Dropdown Content */
-            --gdd-content-w: 13rem;
-            --gdd-content-max-w: 16rem;
-            --gdd-content-mx: 0;
-            --gdd-content-my: 0.25rem;
-            --gdd-content-px: 0.375rem;
-            --gdd-content-py: 0.5rem;
+      --gdd-primary-50: var(--gdd-primary);
 
-            --gdd-content-border-width: 1px;
-            --gdd-content-border-style: solid;
-            --gdd-content-border-radius: 0.25rem;
+      --gdd-primary-60: color-mix(
+          in var(--gdd-color-space),
+          var(--gdd-primary) 70%,
+          black
+      );
 
-            --gdd-content-animation-name: fadeIn;
-            --gdd-content-animation-duration: 0.3s;
-            --gdd-content-animation-timing-function: ease-in-out;
-            --gdd-content-animation-direction: forwards;
+      --gdd-primary-70: color-mix(
+          in var(--gdd-color-space),
+          var(--gdd-primary) 50%,
+          black
+      );
 
-            /* Dropdown Item */
-            --gdd-item-px: 0.375rem;
-            --gdd-item-py: 0.375rem;
-            --gdd-item-icon-space: 1ch;
+      --gdd-primary-80: color-mix(
+          in var(--gdd-color-space),
+          var(--gdd-primary) 30%,
+          black
+      );
 
-            --gdd-item-font-family: inherit;
-            --gdd-item-font-size: 1rem;
-            --gdd-item-font-weight: 500;
-            --gdd-item-line-height: 1.25;
-            --gdd-item-letter-spacing: 0.025em;
+      --gdd-primary-90: color-mix(
+          in var(--gdd-color-space),
+          var(--gdd-primary) 10%,
+          black
+      );
 
-            --gdd-item-border-width: 1px;
-            --gdd-item-border-style: solid;
-            --gdd-item-border-color: transparent;
-            --gdd-item-border-radius: 0.25rem;
+      --gdd-primary-lightest: var(--gdd-primary-10);
+      --gdd-primary-lighter: var(--gdd-primary-20);
+      --gdd-primary-light: var(--gdd-primary-40);
+      --gdd-primary-dark: var(--gdd-primary-60);
+      --gdd-primary-darker: var(--gdd-primary-80);
+      --gdd-primary-darkest: var(--gdd-primary-90);
 
-            --gdd-item-ring-width: 1px;
-            --gdd-item-ring-style: solid;
-            --gdd-item-ring-offset: 0;
-            --gdd-item-ring-color: transparent;
+      /* Dropdown Button */
+      --gdd-button-min-w: 4.5em;
+      --gdd-button-py: 1ch;
+      --gdd-button-px: 2ch;
+      --gdd-button-icon-space: 0.5ch;
 
-            /* Divider */
-            --gdd-item-divider-width: 1px;
-            --gdd-item-divider-style: solid;
-        }
+      --gdd-button-font-size: 1rem;
+      --gdd-button-font-family: inherit;
+      --gdd-button-font-weight: 500;
+      --gdd-button-line-height: 1.25;
+      --gdd-button-letter-spacing: 0.025em;
 
-        :root[data-theme="light"] {
-            --gdd-button-color: #1f2937; /* gray-800 */
-            --gdd-button-color-hover: #030712; /* gray-950 */
-            --gdd-button-bg-color: #f9fafb; /* gray-50 */
-            --gdd-button-bg-color-hover: #f3f4f6; /* gray-100 */
-            --gdd-button-border-color: transparent;
-            --gdd-button-ring-color: #d1d5db; /* gray-300 */
+      --gdd-button-border-width: 1px;
+      --gdd-button-border-style: solid;
+      --gdd-button-border-radius: 0.25rem;
 
-            --gdd-content-bg-color: #FFFFFF;
-            --gdd-content-border-color: #e5e7eb; /* gray-200 */
+      --gdd-button-transition-property: background;
+      --gdd-button-transition-duration: 300ms;
+      --gdd-button-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 
-            --gdd-item-color: #030712; /* gray-950 */
-            --gdd-item-color-hover: #030712; /* gray-950 */
-            --gdd-item-bg-color: transparent;
-            --gdd-item-bg-color-hover: #f3f4f6; /* gray-100 */
+      --gdd-button-ring-width: 2px;
+      --gdd-button-ring-style: solid;
+      --gdd-button-ring-offset: 1px;
 
-            --gdd-item-divider-color: #f3f4f6; /* gray-100 */
-        }
+      --gdd-button-animation-open-name: flipOutX;
+      --gdd-button-animation-close-name: flipInX;
 
-        :root[data-theme="dark"] {
-            --gdd-button-color: #f9fafb; /* gray-50 */
-            --gdd-button-color-hover: #f9fafb; /* gray-50 */
-            --gdd-button-bg-color: #1f2937; /* gray-800 */
-            --gdd-button-bg-color-hover: #030712; /* gray-950 */
-            --gdd-button-border-color: transparent;
-            --gdd-button-ring-color: #d1d5db; /* gray-300 */
+      /* Dropdown Content */
+      --gdd-content-w: 13rem;
+      --gdd-content-max-w: 16rem;
+      --gdd-content-mx: 0;
+      --gdd-content-my: 0.25em;
+      --gdd-content-px: 0.375em;
+      --gdd-content-py: 0.5em;
 
-            --gdd-content-bg-color: #1f2937; /* gray-800 */
-            --gdd-content-border-color: #030712; /* gray-950 */
+      --gdd-content-border-width: 1px;
+      --gdd-content-border-style: solid;
+      --gdd-content-border-radius: 0.25rem;
 
-            --gdd-item-color: #f3f4f6; /* gray-100 */
-            --gdd-item-color-hover: #f3f4f6; /* gray-100 */
-            --gdd-item-bg-color: transparent;
-            --gdd-item-bg-color-hover: #030712; /* gray-950 */
+      --gdd-content-animation-name: fadeIn;
+      --gdd-content-animation-duration: 0.3s;
+      --gdd-content-animation-timing-function: ease-in-out;
+      --gdd-content-animation-direction: forwards;
 
-            --gdd-item-divider-color: #4b5563; /* gray-600 */
-        }
+      /* Dropdown Item */
+      --gdd-item-px: 0.375em;
+      --gdd-item-py: 0.375em;
+      --gdd-item-icon-space: 1ch;
 
-        @media (prefers-color-scheme: light) {
-            :root {
-                --gdd-button-color: #1f2937; /* gray-800 */
-                --gdd-button-color-hover: #030712; /* gray-950 */
-                --gdd-button-bg-color: #f9fafb; /* gray-50 */
-                --gdd-button-bg-color-hover: #f3f4f6; /* gray-100 */
-                --gdd-button-border-color: transparent;
-                --gdd-button-ring-color: #d1d5db; /* gray-300 */
+      --gdd-item-font-family: inherit;
+      --gdd-item-font-size: 1rem;
+      --gdd-item-font-weight: 500;
+      --gdd-item-line-height: 1.25;
+      --gdd-item-letter-spacing: 0.025em;
 
-                --gdd-content-bg-color: #FFFFFF;
-                --gdd-content-border-color: #e5e7eb; /* gray-200 */
+      --gdd-item-border-width: 1px;
+      --gdd-item-border-style: solid;
+      --gdd-item-border-color: transparent;
+      --gdd-item-border-radius: 0.25rem;
 
-                --gdd-item-color: #030712; /* gray-950 */
-                --gdd-item-color-hover: #030712; /* gray-950 */
-                --gdd-item-bg-color: transparent;
-                --gdd-item-bg-color-hover: #f3f4f6; /* gray-100 */
+      --gdd-item-ring-width: 1px;
+      --gdd-item-ring-style: solid;
+      --gdd-item-ring-offset: 0;
+      --gdd-item-ring-color: transparent;
 
-                --gdd-item-divider-color: #f3f4f6; /* gray-100 */
-            }
-        }
+      /* Divider */
+      --gdd-item-divider-width: 1px;
+      --gdd-item-divider-style: solid;
+    }
 
-        @media (prefers-color-scheme: dark){
-            :root {
-                --gdd-button-color: #f9fafb; /* gray-50 */
-                --gdd-button-color-hover: #f3f4f6; /* gray-100 */
-                --gdd-button-bg-color: #1f2937; /* gray-800 */
-                --gdd-button-bg-color-hover: #030712; /* gray-950 */
-                --gdd-button-border-color: transparent;
-                --gdd-button-ring-color: #d1d5db; /* gray-300 */
+    :root[data-theme="light"] {
+      --gdd-button-color: var(--gdd-primary-darker);
+      --gdd-button-color-hover: var(--gdd-primary-darkest);
+      --gdd-button-bg-color: var(--gdd-primary-lightest);
+      --gdd-button-bg-color-hover: var(--gdd-primary-lighter);
+      --gdd-button-border-color: transparent;
+      --gdd-button-ring-color: var(--gdd-primary-light);
 
-                --gdd-content-bg-color: #1f2937; /* gray-800 */
-                --gdd-content-border-color: #030712; /* gray-950 */
+      --gdd-content-bg-color: #FFFFFF;
+      --gdd-content-border-color: var(--gdd-primary-lighter);
 
-                --gdd-item-color: #f3f4f6; /* gray-100 */
-                --gdd-item-color-hover: #f3f4f6; /* gray-100 */
-                --gdd-item-bg-color: transparent;
-                --gdd-item-bg-color-hover: #030712; /* gray-950 */
+      --gdd-item-color: var(--gdd-primary-darkest);
+      --gdd-item-color-hover: var(--gdd-primary-darkest);
+      --gdd-item-bg-color: transparent;
+      --gdd-item-bg-color-hover: var(--gdd-primary-lighter);
 
-                --gdd-item-divider-color: #4b5563; /* gray-600 */
-            }
-        }
+      --gdd-item-divider-color: var(--gdd-primary-lighter);
+    }
 
+    :root[data-theme="dark"] {
+      --gdd-button-color: var(--gdd-primary-lightest);
+      --gdd-button-color-hover: var(--gdd-primary-lightest);
+      --gdd-button-bg-color: var(--gdd-primary-darker);
+      --gdd-button-bg-color-hover: var(--gdd-primary-dark);
+      --gdd-button-border-color: transparent;
+      --gdd-button-ring-color: var(--gdd-primary-light);
 
-        /* ******************* */
-        /* Dropdown Container  */
-        /* ******************* */
-        div[data-position="top"] ul[class*="gddContent"] {
-            top: auto;
-            bottom: 100%;
-        }
+      --gdd-content-bg-color: var(--gdd-primary-darker);
+      --gdd-content-border-color: var(--gdd-primary-darkest);
 
-        div[data-position="bottom"] ul[class*="gddContent"] {
-            top: 100%;
-            bottom: auto;
-        }
+      --gdd-item-color: var(--gdd-primary-lighter);
+      --gdd-item-color-hover: var(--gdd-primary-lighter);
+      --gdd-item-bg-color: transparent;
+      --gdd-item-bg-color-hover:  var(--gdd-primary-dark);
 
-        div[data-position="left"] ul[class*="gddContent"] {
-            --gdd-content-my: 0;
-            --gdd-content-mx: 0.25rem;
-            inset-inline-end: 100%;
-            top: 0;
-            bottom: auto;
-        }
+      --gdd-item-divider-color: var(--gdd-primary);
+    }
 
-        div[data-position="right"] ul[class*="gddContent"] {
-            --gdd-content-my: 0;
-            --gdd-content-mx: 0.25rem;
-            inset-inline-start: 100%;
-            top: 0;
-            bottom: auto;
-        }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --gdd-button-color: var(--gdd-primary-darker);
+        --gdd-button-color-hover: var(--gdd-primary-darkest);
+        --gdd-button-bg-color: var(--gdd-primary-lightest);
+        --gdd-button-bg-color-hover: var(--gdd-primary-lighter);
+        --gdd-button-border-color: transparent;
+        --gdd-button-ring-color: var(--gdd-primary-light);
 
-        /* ******************* */
-        /* Dropdown Button     */
-        /* ******************* */
+        --gdd-content-bg-color: #FFFFFF;
+        --gdd-content-border-color: var(--gdd-primary-lighter);
 
-        /* Apply animations based on classes */
-        .iconToOpen {
-            animation: var(--gdd-button-animation-open-name) 0.3s ease forwards;
-        }
+        --gdd-item-color: var(--gdd-primary-darkest);
+        --gdd-item-color-hover: var(--gdd-primary-darkest);
+        --gdd-item-bg-color: transparent;
+        --gdd-item-bg-color-hover: var(--gdd-primary-lighter);
 
-        .iconToClose {
-            animation: var(--gdd-button-animation-close-name) 0.3s ease forwards;
-        }
+        --gdd-item-divider-color: var(--gdd-primary-lighter);
+      }
+    }
 
-        button[class^="gddButton"]:hover,
-        button[class^="gddButton"]:focus {
-            color: var(--gdd-button-color-hover);
-            background-color: var(--gdd-button-bg-color-hover);
-        }
+    @media (prefers-color-scheme: dark){
+      :root {
+        --gdd-button-color: var(--gdd-primary-lightest);
+        --gdd-button-color-hover: var(--gdd-primary-lightest);
+        --gdd-button-bg-color: var(--gdd-primary-darker);
+        --gdd-button-bg-color-hover: var(--gdd-primary-dark);
+        --gdd-button-border-color: transparent;
+        --gdd-button-ring-color: var(--gdd-primary-light);
 
-        button[class^="gddButton"]:focus,
-        button[class^="gddButton"]:focus-visible {
-            outline: var(--gdd-button-ring-color) var(--gdd-button-ring-style) var(--gdd-button-ring-width);
-            outline-offset: var(--gdd-button-ring-offset);
-        }
+        --gdd-content-bg-color: var(--gdd-primary-darker);
+        --gdd-content-border-color: var(--gdd-primary-darkest);
 
-        /* ******************* */
-        /* Dropdown Content    */
-        /* ******************* */
-        ul[class*="gddContent"][data-state="open"] {
-            visibility: visible;
-            opacity: 1;
-            animation-name: var(--gdd-content-animation-name);
-        }
+        --gdd-item-color: var(--gdd-primary-lighter);
+        --gdd-item-color-hover: var(--gdd-primary-lighter);
+        --gdd-item-bg-color: transparent;
+        --gdd-item-bg-color-hover:  var(--gdd-primary-dark);
 
-        ul[class*="gddContent"][data-state="close"] {
-            visibility: hidden;
+        --gdd-item-divider-color: var(--gdd-primary);
+      }
+    }
+
+    /* ******************* */
+    /* Dropdown Container  */
+    /* ******************* */
+    div[data-position="top"] ul[class*="gddContent"] {
+        top: auto;
+        bottom: 100%;
+    }
+
+    div[data-position="bottom"] ul[class*="gddContent"] {
+        top: 100%;
+        bottom: auto;
+    }
+
+    div[data-position="left"] ul[class*="gddContent"] {
+        --gdd-content-my: 0;
+        --gdd-content-mx: 0.25rem;
+        inset-inline-end: 100%;
+        top: 0;
+        bottom: auto;
+    }
+
+    div[data-position="right"] ul[class*="gddContent"] {
+        --gdd-content-my: 0;
+        --gdd-content-mx: 0.25rem;
+        inset-inline-start: 100%;
+        top: 0;
+        bottom: auto;
+    }
+
+    /* ******************* */
+    /* Dropdown Button     */
+    /* ******************* */
+
+    /* Apply animations based on classes */
+    .iconToOpen {
+        animation: var(--gdd-button-animation-open-name) 0.3s ease forwards;
+    }
+
+    .iconToClose {
+        animation: var(--gdd-button-animation-close-name) 0.3s ease forwards;
+    }
+
+    button[class^="gddButton"]:hover,
+    button[class^="gddButton"]:focus {
+        color: var(--gdd-button-color-hover);
+        background-color: var(--gdd-button-bg-color-hover);
+    }
+
+    button[class^="gddButton"]:focus,
+    button[class^="gddButton"]:focus-visible {
+        outline: var(--gdd-button-ring-color) var(--gdd-button-ring-style) var(--gdd-button-ring-width);
+        outline-offset: var(--gdd-button-ring-offset);
+    }
+
+    /* ******************* */
+    /* Dropdown Content    */
+    /* ******************* */
+    ul[class*="gddContent"][data-state="open"] {
+        visibility: visible;
+        opacity: 1;
+        animation-name: var(--gdd-content-animation-name);
+    }
+
+    ul[class*="gddContent"][data-state="close"] {
+        visibility: hidden;
+        opacity: 0;
+    }
+
+    /* ******************* */
+    /* Dropdown Item       */
+    /* ******************* */
+    a[class^="gddContent_Item"][href^="http"] {
+        padding-right: 1.25em;
+    }
+
+    a[class^="gddContent_Item"]:hover,
+    a[class^="gddContent_Item"]:focus,
+    button[class^="gddContent_Item"]:hover,
+    button[class^="gddContent_Item"]:focus {
+        color: var(--gdd-item-color-hover);
+        background-color: var(--gdd-item-bg-color-hover);
+    }
+
+    a[class^="gddContent_Item"]:focus,
+    a[class^="gddContent_Item"]:focus-visible,
+    button[class^="gddContent_Item"]:focus,
+    button[class^="gddContent_Item"]:focus-visible {
+        outline: var(--gdd-item-ring-color) var(--gdd-item-ring-style) var(--gdd-item-ring-width);
+        outline-offset: var(--gdd-item-ring-offset);
+    }
+
+    /* ******************* */
+    /* Animations          */
+    /* ******************* */
+    @keyframes fadeIn {
+        from {
             opacity: 0;
         }
 
-        /* ******************* */
-        /* Dropdown Item       */
-        /* ******************* */
-        a[class^="gddContent_Item"][href^="http"] {
-            padding-right: 1.25em;
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes flipInX {
+        from {
+            transform: scaleY(-1);
         }
 
-        a[class^="gddContent_Item"]:hover,
-        a[class^="gddContent_Item"]:focus,
-        button[class^="gddContent_Item"]:hover,
-        button[class^="gddContent_Item"]:focus {
-            color: var(--gdd-item-color-hover);
-            background-color: var(--gdd-item-bg-color-hover);
+        to {
+            transform: scaleY(1);
+        }
+    }
+
+    @keyframes flipOutX {
+        from {
+            transform: scaleY(1);
         }
 
-        a[class^="gddContent_Item"]:focus,
-        a[class^="gddContent_Item"]:focus-visible,
-        button[class^="gddContent_Item"]:focus,
-        button[class^="gddContent_Item"]:focus-visible {
-            outline: var(--gdd-item-ring-color) var(--gdd-item-ring-style) var(--gdd-item-ring-width);
-            outline-offset: var(--gdd-item-ring-offset);
+        to {
+            transform: scaleY(-1);
         }
-
-        /* ******************* */
-        /* Animations          */
-        /* ******************* */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes flipInX {
-            from {
-                transform: scaleY(-1);
-            }
-
-            to {
-                transform: scaleY(1);
-            }
-        }
-
-        @keyframes flipOutX {
-            from {
-                transform: scaleY(1);
-            }
-
-            to {
-                transform: scaleY(-1);
-            }
-        }
-    </style>
+    }
+</style>
 }
 
 css gttSrOnly() {

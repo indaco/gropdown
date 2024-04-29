@@ -13,30 +13,17 @@ templ HomePage(dropdown *gropdown.DropdownBuilder) {
 			@gropdown.GropdownCSS()
 			<!-- set css vars for theming -->
 			<style type="text/css">
-        :root {
-          --gdd-button-color: #312e81;
-          --gdd-button-bg-color: #eef2ff;
-          --gdd-button-bg-color-hover: #e0e7ff;
-          --gdd-button-ring-width: 2px;
-          --gdd-button-ring-style: solid;
-          --gdd-button-ring-offset: 1px;
-          --gdd-button-ring-color: #6366f1;
-
-          --gdd-content-bg-color: #eef2ff;
-          --gdd-content-border-color: #e0e7ff;
-
-          --gdd-item-bg-color-hover: #c7d2fe;
-
-          --gdd-item-divider-color: #312e81;
-        }
+				:root {
+					--gdd-primary: #6366f1;
+				}
 
 				.parent-container {
 					display: flex;
 					justify-content: center;
 					align-items: center;
 					height: 100vh;
-        }
-      </style>
+				}
+			</style>
 		</head>
 		<body class="parent-container">
 			<div class="centered">
