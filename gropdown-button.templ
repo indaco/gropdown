@@ -5,19 +5,8 @@ const defaultButtonIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" v
 </svg>
 `
 
-// getIcon If icons are provided, use the first one; otherwise, empty ButtonIcon struct.
-func getIcon(icons []*ButtonIcon) *ButtonIcon {
-	var icon *ButtonIcon
-	if len(icons) > 0 {
-		icon = icons[0]
-	} else {
-		icon = &ButtonIcon{}
-	}
-	return icon
-}
-
 templ Button(label string, icons ...*ButtonIcon) {
-	@renderButton(label, getIcon(icons))
+	@renderButton(label, getButtonIcon(icons))
 }
 
 templ renderButton(label string, icon *ButtonIcon) {

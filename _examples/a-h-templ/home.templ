@@ -47,12 +47,33 @@ templ HomePage() {
 				@gropdown.Root("demo") {
 					@gropdown.Button("Menu")
 					@gropdown.Content() {
-						@gropdown.Item(gropdown.DropdownItem{Label: "Profile", Href: "/profile", Icon: profileIcon})
-						@gropdown.Item(gropdown.DropdownItem{Label: "Settings", Href: "/settings", Icon: settingsIcon})
+						@gropdown.Item("Profile",
+							gropdown.ItemOptions{
+								Href: "/profile",
+								Icon: profileIcon,
+							},
+						)
+						@gropdown.Item("Settings",
+							gropdown.ItemOptions{
+								Href: "/settings",
+								Icon: settingsIcon,
+							},
+						)
 						@gropdown.Divider()
-						@gropdown.Item(gropdown.DropdownItem{Label: "GitHub", Href: "https://github.com", External: true, Icon: globeIcon})
+						@gropdown.Item("GitHub",
+							gropdown.ItemOptions{
+								Href:     "https://github.com",
+								External: true,
+								Icon:     globeIcon,
+							},
+						)
 						@gropdown.Divider()
-						@gropdown.Item(gropdown.DropdownItem{Label: "Button", Icon: clickIcon, Attrs: templ.Attributes{"onclick": "alert('Hello gropdown');"}})
+						@gropdown.Item("Button",
+							gropdown.ItemOptions{
+								Icon:  clickIcon,
+								Attrs: templ.Attributes{"onclick": "alert('Hello gropdown');"},
+							},
+						)
 					}
 				}
 			</div>

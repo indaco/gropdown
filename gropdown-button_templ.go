@@ -15,17 +15,6 @@ const defaultButtonIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" v
 </svg>
 `
 
-// getIcon If icons are provided, use the first one; otherwise, empty ButtonIcon struct.
-func getIcon(icons []*ButtonIcon) *ButtonIcon {
-	var icon *ButtonIcon
-	if len(icons) > 0 {
-		icon = icons[0]
-	} else {
-		icon = &ButtonIcon{}
-	}
-	return icon
-}
-
 func Button(label string, icons ...*ButtonIcon) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
@@ -39,7 +28,7 @@ func Button(label string, icons ...*ButtonIcon) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = renderButton(label, getIcon(icons)).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = renderButton(label, getButtonIcon(icons)).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -75,7 +64,7 @@ func renderButton(label string, icon *ButtonIcon) templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(buttonId(label))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-button.templ`, Line: 25, Col: 22}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-button.templ`, Line: 14, Col: 22}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -101,7 +90,7 @@ func renderButton(label string, icon *ButtonIcon) templ.Component {
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(label)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-button.templ`, Line: 27, Col: 20}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-button.templ`, Line: 16, Col: 20}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -114,7 +103,7 @@ func renderButton(label string, icon *ButtonIcon) templ.Component {
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(menuId(label))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-button.templ`, Line: 30, Col: 31}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-button.templ`, Line: 19, Col: 31}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
@@ -128,7 +117,7 @@ func renderButton(label string, icon *ButtonIcon) templ.Component {
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(label)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-button.templ`, Line: 33, Col: 10}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-button.templ`, Line: 22, Col: 10}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {
