@@ -2,7 +2,7 @@ package main
 
 import "github.com/indaco/gropdown"
 
-templ HomePage(dropdown *gropdown.DropdownBuilder) {
+templ HomePage() {
 	<!DOCTYPE html>
 	<html lang="en">
 		<head>
@@ -18,16 +18,26 @@ templ HomePage(dropdown *gropdown.DropdownBuilder) {
 					justify-content: center;
 					align-items: center;
 					height: 100vh;
-        }
-      </style>
+				}
+			</style>
 		</head>
 		<body class="parent-container">
 			<div class="centered">
 				<!-- display the dropdown -->
-				@dropdown.Render()
+				@gropdown.Root("demo") {
+					@gropdown.Button("")
+					@gropdown.Content() {
+						@gropdown.Item(gropdown.DropdownItem{Label: "Profile", Href: "/profile", Icon: profileIcon})
+						@gropdown.Item(gropdown.DropdownItem{Label: "Settings", Href: "/settings", Icon: settingsIcon})
+						@gropdown.Divider()
+						@gropdown.Item(gropdown.DropdownItem{Label: "GitHub", Href: "https://github.com", External: true, Icon: globeIcon})
+						@gropdown.Divider()
+						@gropdown.Item(gropdown.DropdownItem{Label: "Button", Icon: clickIcon, Attrs: templ.Attributes{"onclick": "alert('Hello gropdown');"}})
+					}
+				}
 			</div>
 			<!-- inject dropdown javascript -->
-			@gropdown.GropdownJS(dropdown.Dropdown())
+			@gropdown.GropdownJS(gropdown.GetConfigMapFromContext(ctx))
 		</body>
 	</html>
 }

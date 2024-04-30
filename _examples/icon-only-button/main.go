@@ -1,25 +1,24 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
 	"os"
 
-	"github.com/a-h/templ"
 	"github.com/indaco/gropdown"
 )
 
 func HandleHome(w http.ResponseWriter, r *http.Request) {
-	button := gropdown.DropdownButton{}
-	items := []gropdown.DropdownItem{
-		{Label: "Settings", Href: "/settings"},
-		{Label: "GitHub", Href: "https://github.com", External: true},
-		{Divider: true},
-		{Label: "Button", Attrs: templ.Attributes{"onclick": "alert('Hello gropdown');"}},
-	}
-	dropdown := gropdown.NewDropdownBuilder().WithButton(button).WithItems(items)
+	config := gropdown.NewConfigBuilder().WithPosition(gropdown.Right).Build()
+	configMap := gropdown.NewConfigMap()
+	configMap.Add("demo", config)
 
-	templ.Handler(HomePage(dropdown)).ServeHTTP(w, r)
+	ctx := context.WithValue(r.Context(), gropdown.ConfigContextKey, configMap)
+	err := HomePage().Render(ctx, w)
+	if err != nil {
+		return
+	}
 }
 
 func main() {

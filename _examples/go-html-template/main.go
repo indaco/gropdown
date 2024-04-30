@@ -1,12 +1,12 @@
 package main
 
 import (
+	"context"
 	"html/template"
 	"log"
 	"net/http"
 	"os"
 
-	"github.com/a-h/templ"
 	"github.com/indaco/gropdown"
 )
 
@@ -23,25 +23,30 @@ type DropdownComponent struct {
 
 // HandleHome is the handler function for the home page "/"
 func HandleHome(w http.ResponseWriter, r *http.Request) {
-	button := gropdown.DropdownButton{Label: "Menu"}
-	items := []gropdown.DropdownItem{
-		{Label: "Settings", Href: "/settings"},
-		{Label: "GitHub", Href: "https://github.com", External: true},
-		{Divider: true},
-		{Label: "Button", Attrs: templ.Attributes{"onclick": "alert('Hello gropdown');"}},
-	}
-	dropdownBuilder := gropdown.NewDropdownBuilder().WithButton(button).WithItems(items)
+	config := gropdown.NewConfigBuilder().Build()
+	configMap := gropdown.NewConfigMap()
+	configMap.Add("demo", config)
+	ctx := context.WithValue(r.Context(), gropdown.ConfigContextKey, configMap)
 
 	dropdownHTMLGenerator := gropdown.NewHTMLGenerator()
 
 	// Render the needed CSS for dropdown component as template.HTML
-	dropdownCSS, _ := dropdownHTMLGenerator.GropdownCSSToGoHTML()
+	dropdownCSS, err := dropdownHTMLGenerator.GropdownCSSToGoHTML()
+	if err != nil {
+		log.Printf("failed to render template: %v", err)
+	}
 
 	// Render the dropdown component into a template.HTML
-	dropdownHtml, err := dropdownHTMLGenerator.Render(dropdownBuilder)
+	dropdownHtml, err := dropdownHTMLGenerator.Render(ctx, GropdownDemo())
+	if err != nil {
+		log.Printf("failed to render template: %v", err)
+	}
 
 	// Render the needed JS for dropdown component as template.HTML
-	dropdownJS, _ := dropdownHTMLGenerator.GropdownJSToGoHTML(dropdownBuilder.Dropdown())
+	dropdownJS, err := dropdownHTMLGenerator.GropdownJSToGoHTML(configMap)
+	if err != nil {
+		log.Printf("failed to render template: %v", err)
+	}
 
 	data := PageData{
 		Dropdown: DropdownComponent{
@@ -69,13 +74,13 @@ func HandleHome(w http.ResponseWriter, r *http.Request) {
 					align-items: center;
 					height: 100vh;
 				}
-      </style>
+			</style>
 		</head>
 		<body class="parent-container">
-      <div class="centered">
-			  <!-- display the dropdown -->
-			  {{ .Dropdown.HTML }}
-      </div>
+			<div class="centered">
+				<!-- display the dropdown -->
+				{{ .Dropdown.HTML }}
+			</div>
 			<!-- inject dropdown javascript -->
 			{{ .Dropdown.JS }}
 		</body>

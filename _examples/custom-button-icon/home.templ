@@ -2,7 +2,11 @@ package main
 
 import "github.com/indaco/gropdown"
 
-templ HomePage(dropdown *gropdown.DropdownBuilder) {
+const buttonIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+</svg>`
+
+templ HomePage() {
 	<!DOCTYPE html>
 	<html lang="en">
 		<head>
@@ -24,10 +28,20 @@ templ HomePage(dropdown *gropdown.DropdownBuilder) {
 		<body class="parent-container">
 			<div class="centered">
 				<!-- display the dropdown -->
-				@dropdown.Render()
+				@gropdown.Root("demo") {
+					@gropdown.Button("Menu")
+					@gropdown.Content() {
+						@gropdown.Item(gropdown.DropdownItem{Label: "Profile", Href: "/profile", Icon: profileIcon})
+						@gropdown.Item(gropdown.DropdownItem{Label: "Settings", Href: "/settings", Icon: settingsIcon})
+						@gropdown.Divider()
+						@gropdown.Item(gropdown.DropdownItem{Label: "GitHub", Href: "https://github.com", External: true, Icon: globeIcon})
+						@gropdown.Divider()
+						@gropdown.Item(gropdown.DropdownItem{Label: "Button", Icon: clickIcon, Attrs: templ.Attributes{"onclick": "alert('Hello gropdown');"}})
+					}
+				}
 			</div>
 			<!-- inject dropdown javascript -->
-			@gropdown.GropdownJS(dropdown.Dropdown())
+			@gropdown.GropdownJS(gropdown.GetConfigMapFromContext(ctx))
 		</body>
 	</html>
 }
