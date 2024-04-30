@@ -9,9 +9,8 @@ import "github.com/a-h/templ"
 import "context"
 import "io"
 import "bytes"
-import "strings"
 
-func content(dropdown *Dropdown) templ.Component {
+func Content() templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -24,74 +23,39 @@ func content(dropdown *Dropdown) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var2 = []any{gddContent()}
-		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<ul id=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var3 string
-		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(menuId(dropdown.Button.Label))
+		var templ_7745c5c3_Var2 string
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(menuId("dropdown.Button.Label"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-content.templ`, Line: 5, Col: 36}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-content.templ`, Line: 5, Col: 38}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" role=\"menu\" class=\"gdd_content\" aria-labelledby=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var3 string
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(buttonId("dropdown.Button.Label"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-content.templ`, Line: 8, Col: 53}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" role=\"menu\" aria-labelledby=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" data-state=\"close\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var4 string
-		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(buttonId(dropdown.Button.Label))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-content.templ`, Line: 7, Col: 51}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+		templ_7745c5c3_Err = templ_7745c5c3_Var1.Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var5 string
-		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var2).String())
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-content.templ`, Line: 1, Col: 0}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		if dropdown.Open {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" data-state=\"open\"")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		} else {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" data-state=\"close\"")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		for _, item := range dropdown.Items {
-			templ_7745c5c3_Err = contentItem(item).Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</ul>")
 		if templ_7745c5c3_Err != nil {
@@ -102,30 +66,4 @@ func content(dropdown *Dropdown) templ.Component {
 		}
 		return templ_7745c5c3_Err
 	})
-}
-
-func gddContent() templ.CSSClass {
-	var templ_7745c5c3_CSSBuilder strings.Builder
-	templ_7745c5c3_CSSBuilder.WriteString(`position:absolute;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`z-index:10;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`overflow:hidden;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`list-style:none;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`width:var(--gdd-content-w);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`max-width:var(--gdd-content-max-w);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`margin:var(--gdd-content-my) var(--gdd-content-mx);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`padding:var(--gdd-content-py) var(--gdd-content-px);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`background-color:var(--gdd-content-bg-color);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`border-width:var(--gdd-content-border-width);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`border-style:var(--gdd-content-border-style);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`border-color:var(--gdd-content-border-color);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`border-radius:var(--gdd-content-border-radius);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`transition:opacity var(--gdd-content-animation-duration) var(--gdd-content-animation-timing-function);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`animation-duration:var(--gdd-content-animation-duration);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`animation-direction:var(--gdd-content-animation-direction);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`animation-timing-function:var(--gdd-content-animation-timing-function);`)
-	templ_7745c5c3_CSSID := templ.CSSID(`gddContent`, templ_7745c5c3_CSSBuilder.String())
-	return templ.ComponentCSSClass{
-		ID:    templ_7745c5c3_CSSID,
-		Class: templ.SafeCSS(`.` + templ_7745c5c3_CSSID + `{` + templ_7745c5c3_CSSBuilder.String() + `}`),
-	}
 }

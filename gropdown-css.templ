@@ -66,8 +66,8 @@ templ GropdownCSS() {
 
       --gdd-primary-lightest: var(--gdd-primary-10);
       --gdd-primary-lighter: var(--gdd-primary-20);
-      --gdd-primary-light: var(--gdd-primary-40);
-      --gdd-primary-dark: var(--gdd-primary-60);
+      --gdd-primary-light: var(--gdd-primary-30);
+      --gdd-primary-dark: var(--gdd-primary-70);
       --gdd-primary-darker: var(--gdd-primary-80);
       --gdd-primary-darkest: var(--gdd-primary-90);
 
@@ -221,38 +221,74 @@ templ GropdownCSS() {
       }
     }
 
-    /* ******************* */
-    /* Dropdown Container  */
-    /* ******************* */
-    div[data-position="top"] ul[class*="gddContent"] {
-        top: auto;
-        bottom: 100%;
+    /* ********************************************* *
+     * Dropdown Container
+     * ********************************************* */
+    .gdd_gropdown_container {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-smooth: auto;
+      position: relative;
+      display: inline-block;
     }
 
-    div[data-position="bottom"] ul[class*="gddContent"] {
-        top: 100%;
-        bottom: auto;
+    /* ********************************************* *
+     * Dropdown Button
+     * ********************************************* */
+    .gdd_button {
+      cursor: pointer;
+      min-width: var(--gdd-button-min-w);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--gdd-button-icon-space);
+      margin: 0;
+      padding: var(--gdd-button-py) var(--gdd-button-px);
+      color: var(--gdd-button-color);
+      border-width: var(--gdd-button-border-width);
+      border-style: var(--gdd-button-border-style);
+      border-color: var(--gdd-button-border-color);
+      border-radius: var(--gdd-button-border-radius);
+      background-color: var(--gdd-button-bg-color);
+      font-family: var(--gdd-button-font-family);
+      font-size: var(--gdd-button-font-size);
+      font-weight: var(--gdd-button-font-weight);
+      line-height: var(--gdd-button-line-height);
+      letter-spacing: var(--gdd-button-letter-spacing);
+      text-transform: none;
+      text-decoration-line: var(--_text-decoration-line);
+      transition: var(--gdd-button-transition-property) var(--gdd-button-transition-duration) var(--gdd-button-transition-timing-function);
     }
 
-    div[data-position="left"] ul[class*="gddContent"] {
-        --gdd-content-my: 0;
-        --gdd-content-mx: 0.25rem;
-        inset-inline-end: 100%;
-        top: 0;
-        bottom: auto;
+    .gdd_button:hover {
+      color: var(--gdd-button-color-hover);
+      background-color: var(--gdd-button-bg-color-hover);
     }
 
-    div[data-position="right"] ul[class*="gddContent"] {
-        --gdd-content-my: 0;
-        --gdd-content-mx: 0.25rem;
-        inset-inline-start: 100%;
-        top: 0;
-        bottom: auto;
+    .gdd_button:focus,
+    .gdd_button:focus-visible {
+      color: var(--gdd-button-color-hover);
+      background-color: var(--gdd-button-bg-color-hover);
+      outline: var(--gdd-button-ring-color) var(--gdd-button-ring-style) var(--gdd-button-ring-width);
+      outline-offset: var(--gdd-button-ring-offset);
     }
 
-    /* ******************* */
-    /* Dropdown Button     */
-    /* ******************* */
+    .gdd_button_icon {
+      display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
+      width: 1em;
+      height: 1em;
+    }
+
+    .gdd_button_icon_only {
+      min-width: 2.5rem;
+      padding: 0;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 1e5px;
+      aspect-ratio: 1;
+    }
 
     /* Apply animations based on classes */
     .iconToOpen {
@@ -263,58 +299,135 @@ templ GropdownCSS() {
         animation: var(--gdd-button-animation-close-name) 0.3s ease forwards;
     }
 
-    button[class^="gddButton"]:hover,
-    button[class^="gddButton"]:focus {
-        color: var(--gdd-button-color-hover);
-        background-color: var(--gdd-button-bg-color-hover);
+    /* ********************************************* *
+     * Dropdown Content
+     * ********************************************* */
+    .gdd_content {
+      position: absolute;
+      z-index: 10;
+      overflow: hidden;
+      list-style: none;
+      width: var(--gdd-content-w);
+      max-width: var(--gdd-content-max-w);
+      margin: var(--gdd-content-my) var(--gdd-content-mx);
+      padding: var(--gdd-content-py) var(--gdd-content-px);
+      background-color: var(--gdd-content-bg-color);
+      border-width: var(--gdd-content-border-width);
+      border-style: var(--gdd-content-border-style);
+      border-color: var(--gdd-content-border-color);
+      border-radius: var(--gdd-content-border-radius);
+      transition: opacity var(--gdd-content-animation-duration) var(--gdd-content-animation-timing-function);
+      animation-duration: var(--gdd-content-animation-duration);
+      animation-direction: var(--gdd-content-animation-direction);
+      animation-timing-function: var(--gdd-content-animation-timing-function);
     }
 
-    button[class^="gddButton"]:focus,
-    button[class^="gddButton"]:focus-visible {
-        outline: var(--gdd-button-ring-color) var(--gdd-button-ring-style) var(--gdd-button-ring-width);
-        outline-offset: var(--gdd-button-ring-offset);
+    [data-position="top"] .gdd_content {
+        top: auto;
+        bottom: 100%;
     }
 
-    /* ******************* */
-    /* Dropdown Content    */
-    /* ******************* */
-    ul[class*="gddContent"][data-state="open"] {
-        visibility: visible;
-        opacity: 1;
-        animation-name: var(--gdd-content-animation-name);
+    [data-position="bottom"] .gdd_content {
+        top: 100%;
+        bottom: auto;
     }
 
-    ul[class*="gddContent"][data-state="close"] {
-        visibility: hidden;
-        opacity: 0;
+    [data-position="left"] .gdd_content {
+        --gdd-content-my: 0;
+        --gdd-content-mx: 0.25rem;
+        inset-inline-end: 100%;
+        top: 0;
+        bottom: auto;
     }
 
-    /* ******************* */
-    /* Dropdown Item       */
-    /* ******************* */
-    a[class^="gddContent_Item"][href^="http"] {
+    [data-position="right"] .gdd_content {
+        --gdd-content-my: 0;
+        --gdd-content-mx: 0.25rem;
+        inset-inline-start: 100%;
+        top: 0;
+        bottom: auto;
+    }
+
+    .gdd_content[data-state="open"] {
+      visibility: visible;
+      opacity: 1;
+      animation-name: var(--gdd-content-animation-name);
+    }
+
+    .gdd_content[data-state="close"] {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    /* ********************************************* *
+     * Dropdown Content Item
+     * ********************************************* */
+    .gdd_content_item {
+      position: relative;
+      display: flex;
+      width: 100%;
+      text-decoration: none;
+      gap: var(--gdd-item-icon-space);
+      padding: var(--gdd-item-py) var(--gdd-item-px);
+      color: var(--gdd-item-color);
+      font-family: var(--gdd-item-font-family);
+      font-size: var(--gdd-item-font-size);
+      line-height: var(--gdd-item-line-height);
+      letter-spacing: var(--gdd-item-letter-spacing);
+      background-color: var(--gdd-item-bg-color);
+      border-width: var(--gdd-item-border-width);
+      border-style: var(--gdd-item-border-style);
+      border-color: var(--gdd-item-border-color);
+      border-radius: var(--gdd-item-border-radius);
+      }
+
+    .gdd_content_item[href^="http"] {
         padding-right: 1.25em;
     }
 
-    a[class^="gddContent_Item"]:hover,
-    a[class^="gddContent_Item"]:focus,
-    button[class^="gddContent_Item"]:hover,
-    button[class^="gddContent_Item"]:focus {
+    .gdd_content_item:hover {
         color: var(--gdd-item-color-hover);
         background-color: var(--gdd-item-bg-color-hover);
     }
 
-    a[class^="gddContent_Item"]:focus,
-    a[class^="gddContent_Item"]:focus-visible,
-    button[class^="gddContent_Item"]:focus,
-    button[class^="gddContent_Item"]:focus-visible {
+    .gdd_content_item:focus,
+    .gdd_content_item:focus-visible {
+        color: var(--gdd-item-color-hover);
+        background-color: var(--gdd-item-bg-color-hover);
         outline: var(--gdd-item-ring-color) var(--gdd-item-ring-style) var(--gdd-item-ring-width);
         outline-offset: var(--gdd-item-ring-offset);
     }
 
-    /* ******************* */
-    /* Animations          */
-    /* ******************* */
+    .gdd_content_item_icon {
+      display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
+      width: 1.25em;
+      height: 1.25em;
+    }
+
+    .gdd_content_divider {
+      height: 0;
+      margin: 0.125rem 0;
+      overflow: hidden;
+      border-top: var(--gdd-item-divider-width) var(--gdd-item-divider-style) var(--gdd-item-divider-color);
+    }
+
+    .gdd_sr_only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+
+    /* ********************************************* *
+     * Animations
+     * ********************************************* */
     @keyframes fadeIn {
         from {
             opacity: 0;
@@ -345,16 +458,4 @@ templ GropdownCSS() {
         }
     }
 </style>
-}
-
-css gttSrOnly() {
-	position: absolute;
-	width: 1px;
-	height: 1px;
-	padding: 0;
-	margin: -1px;
-	overflow: hidden;
-	clip: rect(0, 0, 0, 0);
-	white-space: nowrap;
-	border-width: 0;
 }

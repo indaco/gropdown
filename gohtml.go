@@ -4,8 +4,9 @@ package gropdown
 import (
 	"context"
 	"fmt"
-	"github.com/a-h/templ"
 	"html/template"
+
+	"github.com/a-h/templ"
 )
 
 // HTMLGenerator provides functions for generating HTML code for dropdown.
@@ -26,20 +27,20 @@ func (g *HTMLGenerator) GropdownCSSToGoHTML() (template.HTML, error) {
 }
 
 // GropdownJSToGoHTML generates HTML code for the dropdown JS and returns it as a template.HTML.
-func (g *HTMLGenerator) GropdownJSToGoHTML(dropdown *Dropdown) (template.HTML, error) {
-	html, err := templ.ToGoHTML(context.Background(), GropdownJS(dropdown))
+func (g *HTMLGenerator) GropdownJSToGoHTML(configMap *ConfigMap) (template.HTML, error) {
+	html, err := templ.ToGoHTML(context.Background(), GropdownJS(configMap))
 	if err != nil {
 		return "", fmt.Errorf("failed to generate dropdown JS: %v", err)
 	}
 	return html, nil
 }
 
-// Render generates HTML code for displaying the dropdown and returns it as a template.HTML.
-func (g *HTMLGenerator) Render(dd *DropdownBuilder) (template.HTML, error) {
+// Render generates HTML code for displaying the tabber and returns it as a template.HTML.
+func (g *HTMLGenerator) Render(ctx context.Context, comp templ.Component) (template.HTML, error) {
 	// Generate HTML code for displaying the toast.
-	html, err := templ.ToGoHTML(context.Background(), dd.Render())
+	html, err := templ.ToGoHTML(ctx, comp)
 	if err != nil {
-		return "", fmt.Errorf("failed to generate dropdown HTML: %v", err)
+		return "", fmt.Errorf("failed to generate tabber HTML: %v", err)
 	}
 	return html, nil
 }

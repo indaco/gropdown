@@ -1,39 +1,13 @@
 package gropdown
 
-templ content(dropdown *Dropdown) {
+templ Content() {
 	<ul
-		id={ menuId(dropdown.Button.Label) }
+		id={ menuId("dropdown.Button.Label") }
 		role="menu"
-		aria-labelledby={ buttonId(dropdown.Button.Label) }
-		class={ gddContent() }
-		if dropdown.Open {
-			data-state="open"
-		} else {
-			data-state="close"
-		}
+		class="gdd_content"
+		aria-labelledby={ buttonId("dropdown.Button.Label") }
+		data-state="close"
 	>
-		for _, item := range dropdown.Items {
-			@contentItem(item)
-		}
+		{ children... }
 	</ul>
-}
-
-css gddContent() {
-	position: absolute;
-	z-index: 10;
-	overflow: hidden;
-	list-style: none;
-	width: var(--gdd-content-w);
-	max-width: var(--gdd-content-max-w);
-	margin: var(--gdd-content-my) var(--gdd-content-mx);
-	padding: var(--gdd-content-py) var(--gdd-content-px);
-	background-color: var(--gdd-content-bg-color);
-	border-width: var(--gdd-content-border-width);
-	border-style: var(--gdd-content-border-style);
-	border-color: var(--gdd-content-border-color);
-	border-radius: var(--gdd-content-border-radius);
-	transition: opacity var(--gdd-content-animation-duration) var(--gdd-content-animation-timing-function);
-	animation-duration: var(--gdd-content-animation-duration);
-	animation-direction: var(--gdd-content-animation-direction);
-	animation-timing-function: var(--gdd-content-animation-timing-function);
 }

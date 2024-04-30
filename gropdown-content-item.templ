@@ -2,11 +2,9 @@ package gropdown
 
 const defaultExternalLinkIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="0.875em" height="0.875em" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>`
 
-templ contentItem(item DropdownItem) {
+templ Item(item DropdownItem) {
 	<li role="none">
-		if item.Divider {
-			@divider()
-		} else if item.Href != "" {
+		if item.Href != "" {
 			@linkItem(item)
 		} else {
 			@buttonItem(item)
@@ -17,7 +15,7 @@ templ contentItem(item DropdownItem) {
 templ linkItem(item DropdownItem) {
 	<a
 		role="menuitem"
-		class={ gddContent_Item() }
+		class="gdd_content_item"
 		href={ templ.SafeURL(item.Href) }
 		if item.External {
 			target="_blank"
@@ -26,7 +24,7 @@ templ linkItem(item DropdownItem) {
 		{ item.Attrs... }
 	>
 		if item.Icon != "" {
-			<div class={ gddContent_ItemIcon() }>
+			<div class="gdd_content_item_icon">
 				@templ.Raw(item.Icon)
 			</div>
 		}
@@ -38,50 +36,12 @@ templ linkItem(item DropdownItem) {
 }
 
 templ buttonItem(item DropdownItem) {
-	<button role="menuitem" class={ gddContent_Item() } { item.Attrs... }>
+	<button role="menuitem" class="gdd_content_item" { item.Attrs... }>
 		if item.Icon != "" {
-			<div class={ gddContent_ItemIcon() }>
+			<div class="gdd_content_item_icon">
 				@templ.Raw(item.Icon)
 			</div>
 		}
 		{ item.Label }
 	</button>
-}
-
-templ divider() {
-	<div class={ gddContent_ItemDivider() }></div>
-}
-
-css gddContent_Item() {
-	position: relative;
-	display: flex;
-	width: 100%;
-	text-decoration: none;
-	gap: var(--gdd-item-icon-space);
-	padding: var(--gdd-item-py) var(--gdd-item-px);
-	color: var(--gdd-item-color);
-	font-family: var(--gdd-item-font-family);
-	font-size: var(--gdd-item-font-size);
-	line-height: var(--gdd-item-line-height);
-	letter-spacing: var(--gdd-item-letter-spacing);
-	background-color: var(--gdd-item-bg-color);
-	border-width: var(--gdd-item-border-width);
-	border-style: var(--gdd-item-border-style);
-	border-color: var(--gdd-item-border-color);
-	border-radius: var(--gdd-item-border-radius);
-}
-
-css gddContent_ItemIcon() {
-	display: inline-flex;
-	align-items: center;
-	flex-shrink: 0;
-	width: 1.25em;
-	height: 1.25em;
-}
-
-css gddContent_ItemDivider() {
-	height: 0;
-	margin: 0.125rem 0;
-	overflow: hidden;
-	border-top: var(--gdd-item-divider-width) var(--gdd-item-divider-style) var(--gdd-item-divider-color);
 }

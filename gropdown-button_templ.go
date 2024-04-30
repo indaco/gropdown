@@ -9,14 +9,24 @@ import "github.com/a-h/templ"
 import "context"
 import "io"
 import "bytes"
-import "strings"
 
 const defaultButtonIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width="16" height="16" stroke-width="1.5" stroke="currentColor">
   <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
 </svg>
 `
 
-func button(btn DropdownButton) templ.Component {
+// getIcon If icons are provided, use the first one; otherwise, empty ButtonIcon struct.
+func getIcon(icons []*ButtonIcon) *ButtonIcon {
+	var icon *ButtonIcon
+	if len(icons) > 0 {
+		icon = icons[0]
+	} else {
+		icon = &ButtonIcon{}
+	}
+	return icon
+}
+
+func Button(label string, icons ...*ButtonIcon) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -29,8 +39,32 @@ func button(btn DropdownButton) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		var templ_7745c5c3_Var2 = []any{gddButton(), templ.KV(gddButton_IconOnly(), btn.Label == "")}
-		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
+		templ_7745c5c3_Err = renderButton(label, getIcon(icons)).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if !templ_7745c5c3_IsBuffer {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteTo(templ_7745c5c3_W)
+		}
+		return templ_7745c5c3_Err
+	})
+}
+
+func renderButton(label string, icon *ButtonIcon) templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
+		if !templ_7745c5c3_IsBuffer {
+			templ_7745c5c3_Buffer = templ.GetBuffer()
+			defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var2 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var2 == nil {
+			templ_7745c5c3_Var2 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		var templ_7745c5c3_Var3 = []any{"gdd_button", templ.KV("gdd_button_icon_only", label == "")}
+		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var3...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -38,12 +72,12 @@ func button(btn DropdownButton) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var3 string
-		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(buttonId(btn.Label))
+		var templ_7745c5c3_Var4 string
+		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(buttonId(label))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-button.templ`, Line: 10, Col: 26}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-button.templ`, Line: 25, Col: 22}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -51,12 +85,12 @@ func button(btn DropdownButton) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var4 string
-		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var2).String())
+		var templ_7745c5c3_Var5 string
+		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var3).String())
 		if templ_7745c5c3_Err != nil {
 			return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-button.templ`, Line: 1, Col: 0}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -64,12 +98,12 @@ func button(btn DropdownButton) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var5 string
-		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(btn.Label)
+		var templ_7745c5c3_Var6 string
+		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(label)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-button.templ`, Line: 12, Col: 24}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-button.templ`, Line: 27, Col: 20}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -77,34 +111,26 @@ func button(btn DropdownButton) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var6 string
-		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(menuId(btn.Label))
+		var templ_7745c5c3_Var7 string
+		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(menuId(label))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-button.templ`, Line: 15, Col: 35}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-button.templ`, Line: 30, Col: 31}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderAttributes(ctx, templ_7745c5c3_Buffer, btn.Attrs)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		if btn.Label != "" {
-			var templ_7745c5c3_Var7 string
-			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(btn.Label)
+		if label != "" {
+			var templ_7745c5c3_Var8 string
+			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(label)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-button.templ`, Line: 19, Col: 14}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-button.templ`, Line: 33, Col: 10}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -113,52 +139,12 @@ func button(btn DropdownButton) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		var templ_7745c5c3_Var8 = []any{gttSrOnly()}
-		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var8...)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<span class=\"gdd_sr_only\">Open/Close icon</span> <span class=\"gdd_button_icon\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<span class=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var9 string
-		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var8).String())
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-button.templ`, Line: 1, Col: 0}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">Open/Close icon</span> ")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var10 = []any{gddButton_Icon()}
-		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var10...)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<span class=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var11 string
-		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var10).String())
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `gropdown-button.templ`, Line: 1, Col: 0}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		if btn.Icon != "" {
-			templ_7745c5c3_Err = templ.Raw(btn.Icon).Render(ctx, templ_7745c5c3_Buffer)
+		if icon.value != "" {
+			templ_7745c5c3_Err = templ.Raw(icon.value).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -177,64 +163,4 @@ func button(btn DropdownButton) templ.Component {
 		}
 		return templ_7745c5c3_Err
 	})
-}
-
-func gddButton() templ.CSSClass {
-	var templ_7745c5c3_CSSBuilder strings.Builder
-	templ_7745c5c3_CSSBuilder.WriteString(`cursor:pointer;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`min-width:var(--gdd-button-min-w);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`display:inline-flex;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`align-items:center;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`justify-content:center;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`gap:var(--gdd-button-icon-space);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`margin:0;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`padding:var(--gdd-button-py) var(--gdd-button-px);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`color:var(--gdd-button-color);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`border-width:var(--gdd-button-border-width);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`border-style:var(--gdd-button-border-style);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`border-color:var(--gdd-button-border-color);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`border-radius:var(--gdd-button-border-radius);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`background-color:var(--gdd-button-bg-color);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`font-family:var(--gdd-button-font-family);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`font-size:var(--gdd-button-font-size);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`font-weight:var(--gdd-button-font-weight);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`line-height:var(--gdd-button-line-height);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`letter-spacing:var(--gdd-button-letter-spacing);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`text-transform:none;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`text-decoration-line:var(--_text-decoration-line);`)
-	templ_7745c5c3_CSSBuilder.WriteString(`transition:var(--gdd-button-transition-property) var(--gdd-button-transition-duration) var(--gdd-button-transition-timing-function);`)
-	templ_7745c5c3_CSSID := templ.CSSID(`gddButton`, templ_7745c5c3_CSSBuilder.String())
-	return templ.ComponentCSSClass{
-		ID:    templ_7745c5c3_CSSID,
-		Class: templ.SafeCSS(`.` + templ_7745c5c3_CSSID + `{` + templ_7745c5c3_CSSBuilder.String() + `}`),
-	}
-}
-
-func gddButton_Icon() templ.CSSClass {
-	var templ_7745c5c3_CSSBuilder strings.Builder
-	templ_7745c5c3_CSSBuilder.WriteString(`display:inline-flex;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`align-items:center;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`flex-shrink:0;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`width:1em;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`height:1em;`)
-	templ_7745c5c3_CSSID := templ.CSSID(`gddButton_Icon`, templ_7745c5c3_CSSBuilder.String())
-	return templ.ComponentCSSClass{
-		ID:    templ_7745c5c3_CSSID,
-		Class: templ.SafeCSS(`.` + templ_7745c5c3_CSSID + `{` + templ_7745c5c3_CSSBuilder.String() + `}`),
-	}
-}
-
-func gddButton_IconOnly() templ.CSSClass {
-	var templ_7745c5c3_CSSBuilder strings.Builder
-	templ_7745c5c3_CSSBuilder.WriteString(`min-width:2.5rem;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`padding:0;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`width:2.5rem;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`height:2.5rem;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`border-radius:1e5px;`)
-	templ_7745c5c3_CSSBuilder.WriteString(`aspect-ratio:1;`)
-	templ_7745c5c3_CSSID := templ.CSSID(`gddButton_IconOnly`, templ_7745c5c3_CSSBuilder.String())
-	return templ.ComponentCSSClass{
-		ID:    templ_7745c5c3_CSSID,
-		Class: templ.SafeCSS(`.` + templ_7745c5c3_CSSID + `{` + templ_7745c5c3_CSSBuilder.String() + `}`),
-	}
 }

@@ -7,57 +7,24 @@ package gropdown
 
 import "github.com/a-h/templ"
 
-func GropdownJS(dropdown *Dropdown) templ.ComponentScript {
+func GropdownJS(configMap *ConfigMap) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_GropdownJS_c0e9`,
-		Function: `function __templ_GropdownJS_c0e9(dropdown){// Utility function to check if a value is null or undefined
-    function isNullish(value) {
-        return value === null || value === undefined;
-    }
+		Name: `__templ_GropdownJS_c9d1`,
+		Function: `function __templ_GropdownJS_c9d1(configMap){// Utility function to check if a value is null or undefined
+  function isNullish(value) {
+      return value === null || value === undefined;
+  }
 
-    // Utility function to checks if a given value is of boolean type and has a value of ` + "`" + `true` + "`" + ` or ` + "`" + `false` + "`" + `.
-    function isBool(value) {
-        return typeof value === 'boolean' && (value === true || value === false);
-    }
+  // Utility function to checks if a given value is of boolean type and has a value of ` + "`" + `true` + "`" + ` or ` + "`" + `false` + "`" + `.
+  function isBool(value) {
+      return typeof value === 'boolean' && (value === true || value === false);
+  }
 
-    // Utility function to check if a given string is a single character.
-    function isChar(txt) {
-        const charsRegex = /\S/;
-        return txt.length === 1 && charsRegex.test(txt);
-    }
-
-    /**
-     * Extracts a string ID from the aria-label attribute of the provided HTML element.
-     * @param {HTMLElement} node - The HTML element from which to extract the ID.
-     * @returns {string} The extracted string ID, or an empty string if no aria-label attribute is present.
-     */
-    function getIdFromAriaLabel(node) {
-        const ariaLabel = node.getAttribute('aria-label')
-
-        if (ariaLabel) {
-            return ariaLabel.trim().toLowerCase().replace(/[\s/]/g, '-')
-        }
-
-        return ''
-    }
-
-    /**
-     * Generates a component ID based on the provided node\'s role and aria-label attributes.
-     * @param {HTMLElement} node - The HTML element for which to generate the component ID.
-     * @returns {string} The generated component ID.
-     */
-    function getComponentId(node) {
-        const role = node.getAttribute('role');
-        const ariaLabel = node.getAttribute('aria-label');
-
-        if (role && ariaLabel) {
-            return ` + "`" + `${role}-${ariaLabel.toLowerCase().replace(/\s+/g, '-')}` + "`" + `
-        } else if (role) {
-            return role
-        } else {
-            return ''
-        }
-    }
+  // Utility function to check if a given string is a single character.
+  function isChar(txt) {
+      const charsRegex = /\S/;
+      return txt.length === 1 && charsRegex.test(txt);
+  }
 
     /**
      * The ` + "`" + `ComponentFocusManager` + "`" + ` class provides focus management for components with multiple
@@ -305,7 +272,7 @@ func GropdownJS(dropdown *Dropdown) templ.ComponentScript {
     function a11yActions(node, options) {
         let open = options?.open
         const animated = options?.animated
-        const componentId = getComponentId(node)
+        const componentId = node.getAttribute("id");
         const focusManager = new ComponentFocusManager(componentId)
         const listGroups = {}
         const firstChars = {}
@@ -375,13 +342,10 @@ func GropdownJS(dropdown *Dropdown) templ.ComponentScript {
             open = !open
             const ariaExpanded = open ? 'true' : 'false'
             node
-                .querySelector('[class*="gddButton"]')
+                .querySelector('.gdd_button')
                 .setAttribute('aria-expanded', ariaExpanded)
 
-            const container = node.closest('[class*="gddContainer"]')
-            if (!container) return
-
-            const ulElement = container.querySelector('ul[role="menu"]')
+            const ulElement = node.querySelector('ul[role="menu"]')
             if (!ulElement) return
 
             const currentState = ulElement.getAttribute('data-state')
@@ -402,6 +366,7 @@ func GropdownJS(dropdown *Dropdown) templ.ComponentScript {
             node.focus()
         }
 
+        /** ***************** START - Event Handlers ******************************************** */
         // Button click event handler.
         const onButtonClick = (e) => {
             e.stopPropagation()
@@ -492,46 +457,46 @@ func GropdownJS(dropdown *Dropdown) templ.ComponentScript {
             const target = e.currentTarget
             target.focus()
         }
+        /** ***************** END - Event Handlers ******************************************** */
 
+      const dropdownBtn = node.querySelector(".gdd_button")
+      if (options?.enabled) {
         initialize()
+        node.addEventListener('click', onButtonClick)
+        node.addEventListener('keydown', onButtonKeydown)
 
-        const dropdownBtn = node.querySelector('[class*="gddButton"]')
-        if (options?.enabled) {
-            node.addEventListener('click', onButtonClick)
-            node.addEventListener('keydown', onButtonKeydown)
+        const menuItemNodes = Array.from(node.querySelectorAll('[role="menuitem"]'))
 
-            const menuItemNodes = Array.from(node.querySelectorAll('[role="menuitem"]'))
+        menuItemNodes.forEach((item) => {
+          item.addEventListener('keydown', onItemKeydown)
+          item.addEventListener('mouseover', onItemMouseOver)
+          item.addEventListener('click', onItemClick)
+          listGroups[componentId].push(item)
 
-            menuItemNodes.forEach((item) => {
-                item.addEventListener('keydown', onItemKeydown)
-                item.addEventListener('mouseover', onItemMouseOver)
-                item.addEventListener('click', onItemClick)
-                listGroups[componentId].push(item)
+          const extractFirstChar = (item) => {
+            const textContent = item.textContent?.split('\n').pop().trim();
+            const firstChar = textContent ? textContent.trim().toLowerCase()[0] : null;
+            return firstChar;
+          };
+          const contentFirstChar = extractFirstChar(item)
+          if (contentFirstChar) firstChars[componentId].push(contentFirstChar)
 
-                const extractFirstChar = (item) => {
-                    const textContent = item.textContent?.split('\n').pop().trim();
-                    const firstChar = textContent ? textContent.trim().toLowerCase()[0] : null;
-                    return firstChar;
-                };
-                const contentFirstChar = extractFirstChar(item)
-                if (contentFirstChar) firstChars[componentId].push(contentFirstChar)
-
-                if (!firstItem[componentId]) {
-                    firstItem[componentId] = item
-                }
-                lastItem[componentId] = item
-            })
-
-            focusManager.items = listGroups
-            focusManager.firstChars = firstChars
-            focusManager.firstItem = firstItem
-            focusManager.lastItem = lastItem
-
-            // set the focus on the button when open by default.
-            if (open) {
-                dropdownBtn.focus()
+            if (!firstItem[componentId]) {
+              firstItem[componentId] = item
             }
-        }
+            lastItem[componentId] = item
+          })
+
+          focusManager.items = listGroups
+          focusManager.firstChars = firstChars
+          focusManager.firstItem = firstItem
+          focusManager.lastItem = lastItem
+
+          // set the focus on the button when open by default.
+          if (open) {
+            dropdownBtn.focus()
+          }
+      }
     }
 
     /**
@@ -566,17 +531,22 @@ func GropdownJS(dropdown *Dropdown) templ.ComponentScript {
     document.body.addEventListener('click', clickOutsideAction);
 
     document.addEventListener('DOMContentLoaded', function () {
-        const dropdownContainers = document.querySelectorAll('[class*="gddContainer"]')
-        for (let i = 0; i < dropdownContainers.length; i++) {
-            a11yActions(dropdownContainers[i], {
-                enabled: true,
-                open: dropdown.Open,
-                animated: dropdown.Animation,
-            })
+      // Loop over all tabber components in the page and initialise them.
+      for (const key in configMap.Data) {
+        const gropdownConfig = configMap.Data[key];
+        const containerNode = document.getElementById(` + "`" + `gropdown-container-${key}` + "`" + `);
+
+        if (containerNode !== null) {
+          a11yActions(containerNode, {
+            enabled: true,
+            open: gropdownConfig.Open,
+            animated: gropdownConfig.Animation,
+          })
         }
+      }
     });
 }`,
-		Call:       templ.SafeScript(`__templ_GropdownJS_c0e9`, dropdown),
-		CallInline: templ.SafeScriptInline(`__templ_GropdownJS_c0e9`, dropdown),
+		Call:       templ.SafeScript(`__templ_GropdownJS_c9d1`, configMap),
+		CallInline: templ.SafeScriptInline(`__templ_GropdownJS_c9d1`, configMap),
 	}
 }

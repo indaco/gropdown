@@ -1,19 +1,13 @@
 package gropdown
 
-templ container(dropdown *Dropdown) {
-	<div
-		class={ gddContainer() }
-		data-position={ dropdown.Position.String() }
-	>
-		@button(dropdown.Button)
-		@content(dropdown)
-	</div>
-}
+import "fmt"
 
-css gddContainer() {
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	font-smooth: auto;
-	position: relative;
-	display: inline-block;
+templ Root(id string) {
+	<div
+		id={ toSlug(fmt.Sprintf("gropdown-container-%s", id)) }
+		class="gdd_gropdown_container"
+		data-position={ getPositionAsStringFromContextById(ctx, id) }
+	>
+		{ children... }
+	</div>
 }
