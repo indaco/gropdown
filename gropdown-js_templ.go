@@ -9,544 +9,545 @@ import "github.com/a-h/templ"
 
 func GropdownJS(configMap *ConfigMap) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_GropdownJS_c9d1`,
-		Function: `function __templ_GropdownJS_c9d1(configMap){// Utility function to check if a value is null or undefined
+		Name: `__templ_GropdownJS_c80d`,
+		Function: `function __templ_GropdownJS_c80d(configMap){// Utility function to check if a value is null or undefined
   function isNullish(value) {
-      return value === null || value === undefined;
+    return value === null || value === undefined;
   }
 
   // Utility function to checks if a given value is of boolean type and has a value of ` + "`" + `true` + "`" + ` or ` + "`" + `false` + "`" + `.
   function isBool(value) {
-      return typeof value === 'boolean' && (value === true || value === false);
+    return typeof value === 'boolean' && (value === true || value === false);
   }
 
   // Utility function to check if a given string is a single character.
   function isChar(txt) {
-      const charsRegex = /\S/;
-      return txt.length === 1 && charsRegex.test(txt);
+    const charsRegex = /\S/;
+    return txt.length === 1 && charsRegex.test(txt);
   }
 
+  /**
+    * The ` + "`" + `ComponentFocusManager` + "`" + ` class provides focus management for components with multiple
+    * interactive items. It enables navigation between items, setting focus to specific items, and
+    * handling keyboard interactions.
+    *
+    * Use it to ensure keyboard accessibility as per [WAI ARIA Patterns](https://www.w3.org/WAI/ARIA/apg/patterns/)
+    * and improve user experience in menus, dropdowns, and other interactive components.
+    */
+  class ComponentFocusManager {
     /**
-     * The ` + "`" + `ComponentFocusManager` + "`" + ` class provides focus management for components with multiple
-     * interactive items. It enables navigation between items, setting focus to specific items, and
-     * handling keyboard interactions.
-     *
-     * Use it to ensure keyboard accessibility as per [WAI ARIA Patterns](https://www.w3.org/WAI/ARIA/apg/patterns/)
-     * and improve user experience in menus, dropdowns, and other interactive components.
-     */
-    class ComponentFocusManager {
-        /**
-         * Constructs an instance of ComponentFocusManager.
-         * @param {string} componentId - The ID of the component.
-         */
-        constructor(componentId) {
-            this._id = componentId
-            this._items = {}
-            this._firstChars = {}
-            this._firstItem = {}
-            this._lastItem = {}
-            this._applyDOMChangesFn = async () => {
-                // Default implementation: no pending state changes, resolves immediately
-                return Promise.resolve()
-            }
+      * Constructs an instance of ComponentFocusManager.
+      * @param {string} componentId - The ID of the component.
+      */
+    constructor(componentId) {
+      this._id = componentId
+      this._items = {}
+      this._firstChars = {}
+      this._firstItem = {}
+      this._lastItem = {}
+      this._applyDOMChangesFn = async () => {
+        // Default implementation: no pending state changes, resolves immediately
+        return Promise.resolve()
+      }
 
-            this._items[componentId] = []
-            this._firstChars[componentId] = []
-            this._firstItem[componentId] = null
-            this._lastItem[componentId] = null
-        }
-
-        /**
-         * Gets or sets the collection of items.
-         * @type {Object<string, HTMLElement[]>}
-         */
-        get items() {
-            const {_items} = this
-            return _items
-        }
-
-        set items(value) {
-            this._items = value
-        }
-
-        /**
-         * Gets or sets the collection of first characters.
-         * @type {Object<string, string[]>}
-         */
-        get firstChars() {
-            const {_firstChars} = this
-            return _firstChars
-        }
-
-        set firstChars(value) {
-            this._firstChars = value
-        }
-
-        /**
-         * Gets or sets the first item in each collection.
-         * @type {Object<string, HTMLElement | null>}
-         */
-        get firstItem() {
-            const {_firstItem} = this
-            return _firstItem
-        }
-
-        set firstItem(value) {
-            this._firstItem = value
-        }
-
-        /**
-         * Gets or sets the last item in each collection.
-         * @type {Object<string, HTMLElement | null>}
-         */
-        get lastItem() {
-            const {_lastItem} = this
-            return _lastItem
-        }
-
-        set lastItem(value) {
-            this._lastItem = value
-        }
-
-        /**
-         * Gets or sets the applyDOMChanges promise.
-         * @type {() => Promise<void>}
-         */
-        get applyDOMChangesFn() {
-            return this._applyDOMChangesFn
-        }
-
-        set applyDOMChangesFn(value) {
-            this._applyDOMChangesFn = value
-        }
-
-        /** methods */
-
-        /**
-         * Runs the focus manager to initialize the collections.
-         */
-        run() {
-            this._items[this._id].forEach((item) => {
-                const menuItemContent = item.textContent?.trim().toLowerCase()[0]
-                if (menuItemContent) this._firstChars[this._id].push(menuItemContent)
-
-                if (!this._firstItem[this._id]) {
-                    this._firstItem[this._id] = item
-                }
-                this._lastItem[this._id] = item
-            })
-        }
-
-        /**
-         * Sets the focus to the first item.
-         * @param {string} [cId] - Optional ID of the component.
-         */
-        setFocusToFirstItem(cId) {
-            const id = this._resolveId(cId)
-            this._setFocusToItem(this._firstItem[id])
-        }
-
-        /**
-         * Sets the focus to the last item.
-         * @param {string} [cId] - Optional ID of the component.
-         */
-        setFocusToLastItem(cId) {
-            const id = this._resolveId(cId)
-            this._setFocusToItem(this._lastItem[id])
-        }
-
-        /**
-         * Sets the focus to the previous item relative to the current item.
-         * @param {HTMLElement} currentItem - The current item.
-         * @param {string} [cId] - Optional ID of the component.
-         * @returns {HTMLElement} The new focused item.
-         */
-        setFocusToPreviousItem(currentItem, cId) {
-            const id = this._resolveId(cId)
-            let newMenuItem, index
-
-            if (currentItem === this._firstItem[id]) {
-                newMenuItem = this._lastItem[id]
-            } else {
-                index = this._items[id].indexOf(currentItem)
-                newMenuItem = this._items[id][index - 1]
-            }
-
-            this._setFocusToItem(newMenuItem)
-            return newMenuItem
-        }
-
-        /**
-         * Sets the focus to the next item relative to the current item.
-         * @param {HTMLElement} currentItem - The current item.
-         * @param {string} [cId] - Optional ID of the component.
-         * @returns {HTMLElement} The new focused item.
-         */
-        setFocusToNextItem(currentItem, cId) {
-            const id = this._resolveId(cId)
-            let newMenuItem, index
-
-            if (currentItem === this._lastItem[id]) {
-                newMenuItem = this._firstItem[id]
-            } else {
-                index = this._items[id].indexOf(currentItem)
-                newMenuItem = this._items[id][index + 1]
-            }
-
-            this._setFocusToItem(newMenuItem)
-            return newMenuItem
-        }
-
-        /**
-         * Sets the focus to the item whose content starts with the specified character.
-         * @param {HTMLElement} currentItem - The current item.
-         * @param {string} c - The character to match.
-         */
-        setFocusByFirstChar(currentItem, c) {
-            let start, index
-
-            if (c.length > 1) return
-            c = c.toLowerCase()
-            start = this._items[this._id].indexOf(currentItem) + 1
-            if (start >= this._items[this._id].length) {
-                start = 0
-            }
-            index = this._firstChars[this._id].indexOf(c, start)
-            if (index === -1) {
-                index = this._firstChars[this._id].indexOf(c, 0)
-            }
-            if (index > -1) {
-                this._setFocusToItem(this._items[this._id][index])
-            }
-        }
-
-        /**
-         * Checks if the given node is a submenu.
-         * @param {HTMLElement} node - The node to check.
-         * @returns {boolean} A boolean indicating whether the node is a submenu.
-         */
-        isSubMenu(node) {
-            return node.getAttribute('aria-haspopup') === 'true'
-        }
-
-        /**
-         * Resolves the ID to use based on the provided ID or the default ID of the component.
-         * @param {string} [id] - The optional ID to resolve.
-         * @returns {string} The resolved ID.
-         * @private
-         */
-        _resolveId(id) {
-            return !isNullish(id) ? id : this._id
-        }
-
-        /**
-         * Sets the focus to the given item.
-         * @param {HTMLElement | null} item - The item to set focus to.
-         * @private
-         */
-        async _setFocusToItem(item) {
-            if (this._items[this._id] && item) {
-                await Promise.all(
-                    this._items[this._id].map(async (itemNode) => {
-                        if (itemNode === item) {
-                            itemNode.tabIndex = 0
-                            await this.applyDOMChangesFn()
-                            itemNode.focus()
-                        } else {
-                            itemNode.tabIndex = -1
-                        }
-                    })
-                )
-            }
-        }
+      this._items[componentId] = []
+      this._firstChars[componentId] = []
+      this._firstItem[componentId] = null
+      this._lastItem[componentId] = null
     }
 
     /**
-     * Initializes accessibility actions for a dropdown component.
-     * @param {HTMLElement} node - The root element of the dropdown component.
-     * @param {object} options - Options for configuring the accessibility actions.
-     * @param {boolean} options.enabled - Flag indicating if the accessibility actions on the dropdown should be enabled.
-     * @param {boolean} options.open - Flag indicating if the dropdown is initially open.
-     * @param {boolean} options.animated - Flag indicating if the dropdown menu button should use icon animations.
-     */
-    function a11yActions(node, options) {
-        let open = options?.open
-        const animated = options?.animated
-        const componentId = node.getAttribute("id");
-        const focusManager = new ComponentFocusManager(componentId)
-        const listGroups = {}
-        const firstChars = {}
-        const firstItem = {}
-        const lastItem = {}
+      * Gets or sets the collection of items.
+      * @type {Object<string, HTMLElement[]>}
+      */
+    get items() {
+      const { _items } = this
+      return _items
+    }
 
-        // Initializes the dropdown component.
-        const initialize = () => {
-            listGroups[componentId] = []
-            firstChars[componentId] = []
-            firstItem[componentId] = null
-            lastItem[componentId] = null
+    set items(value) {
+      this._items = value
+    }
+
+    /**
+      * Gets or sets the collection of first characters.
+      * @type {Object<string, string[]>}
+      */
+    get firstChars() {
+      const { _firstChars } = this
+      return _firstChars
+    }
+
+    set firstChars(value) {
+      this._firstChars = value
+    }
+
+    /**
+      * Gets or sets the first item in each collection.
+      * @type {Object<string, HTMLElement | null>}
+      */
+    get firstItem() {
+      const { _firstItem } = this
+      return _firstItem
+    }
+
+    set firstItem(value) {
+      this._firstItem = value
+    }
+
+    /**
+      * Gets or sets the last item in each collection.
+      * @type {Object<string, HTMLElement | null>}
+      */
+    get lastItem() {
+      const { _lastItem } = this
+      return _lastItem
+    }
+
+    set lastItem(value) {
+      this._lastItem = value
+    }
+
+    /**
+      * Gets or sets the applyDOMChanges promise.
+      * @type {() => Promise<void>}
+      */
+    get applyDOMChangesFn() {
+      return this._applyDOMChangesFn
+    }
+
+    set applyDOMChangesFn(value) {
+      this._applyDOMChangesFn = value
+    }
+
+    /** methods */
+
+    /**
+      * Runs the focus manager to initialize the collections.
+      */
+    run() {
+      this._items[this._id].forEach((item) => {
+        const menuItemContent = item.textContent?.trim().toLowerCase()[0]
+        if (menuItemContent) this._firstChars[this._id].push(menuItemContent)
+
+        if (!this._firstItem[this._id]) {
+          this._firstItem[this._id] = item
         }
+        this._lastItem[this._id] = item
+      })
+    }
 
-        /**
-         * Checks if the given target element is a link (anchor tag).
-         *
-         * @param {HTMLElement} target - The target element to check.
-         * @returns {boolean} Returns true if the target element is a link, otherwise false.
-         */
-        const isLinkElement = (target) => {
-            return target.tagName === 'A';
-        };
+    /**
+      * Sets the focus to the first item.
+      * @param {string} [cId] - Optional ID of the component.
+      */
+    setFocusToFirstItem(cId) {
+      const id = this._resolveId(cId)
+      this._setFocusToItem(this._firstItem[id])
+    }
 
-        /**
-         * Handles click events on dropdown items, performing appropriate actions based on the type of item.
-         *
-         * @param {Event} e - The click event.
-         */
-        const handleClickOnItem = (e) => {
-            e.stopPropagation();
-            e.preventDefault();
+    /**
+      * Sets the focus to the last item.
+      * @param {string} [cId] - Optional ID of the component.
+      */
+    setFocusToLastItem(cId) {
+      const id = this._resolveId(cId)
+      this._setFocusToItem(this._lastItem[id])
+    }
 
-            if (isLinkElement(e.target)) {
-                handleLinkClick(e.target);
+    /**
+      * Sets the focus to the previous item relative to the current item.
+      * @param {HTMLElement} currentItem - The current item.
+      * @param {string} [cId] - Optional ID of the component.
+      * @returns {HTMLElement} The new focused item.
+      */
+    setFocusToPreviousItem(currentItem, cId) {
+      const id = this._resolveId(cId)
+      let newMenuItem, index
+
+      if (currentItem === this._firstItem[id]) {
+        newMenuItem = this._lastItem[id]
+      } else {
+        index = this._items[id].indexOf(currentItem)
+        newMenuItem = this._items[id][index - 1]
+      }
+
+      this._setFocusToItem(newMenuItem)
+      return newMenuItem
+    }
+
+    /**
+      * Sets the focus to the next item relative to the current item.
+      * @param {HTMLElement} currentItem - The current item.
+      * @param {string} [cId] - Optional ID of the component.
+      * @returns {HTMLElement} The new focused item.
+      */
+    setFocusToNextItem(currentItem, cId) {
+      const id = this._resolveId(cId)
+      let newMenuItem, index
+
+      if (currentItem === this._lastItem[id]) {
+        newMenuItem = this._firstItem[id]
+      } else {
+        index = this._items[id].indexOf(currentItem)
+        newMenuItem = this._items[id][index + 1]
+      }
+
+      this._setFocusToItem(newMenuItem)
+      return newMenuItem
+    }
+
+    /**
+      * Sets the focus to the item whose content starts with the specified character.
+      * @param {HTMLElement} currentItem - The current item.
+      * @param {string} c - The character to match.
+      */
+    setFocusByFirstChar(currentItem, c) {
+      let start, index
+
+      if (c.length > 1) return
+      c = c.toLowerCase()
+      start = this._items[this._id].indexOf(currentItem) + 1
+      if (start >= this._items[this._id].length) {
+        start = 0
+      }
+      index = this._firstChars[this._id].indexOf(c, start)
+      if (index === -1) {
+        index = this._firstChars[this._id].indexOf(c, 0)
+      }
+      if (index > -1) {
+        this._setFocusToItem(this._items[this._id][index])
+      }
+    }
+
+    /**
+      * Checks if the given node is a submenu.
+      * @param {HTMLElement} node - The node to check.
+      * @returns {boolean} A boolean indicating whether the node is a submenu.
+      */
+    isSubMenu(node) {
+      return node.getAttribute('aria-haspopup') === 'true'
+    }
+
+    /**
+      * Resolves the ID to use based on the provided ID or the default ID of the component.
+      * @param {string} [id] - The optional ID to resolve.
+      * @returns {string} The resolved ID.
+      * @private
+      */
+    _resolveId(id) {
+      return !isNullish(id) ? id : this._id
+    }
+
+    /**
+      * Sets the focus to the given item.
+      * @param {HTMLElement | null} item - The item to set focus to.
+      * @private
+      */
+    async _setFocusToItem(item) {
+      if (this._items[this._id] && item) {
+        await Promise.all(
+          this._items[this._id].map(async (itemNode) => {
+            if (itemNode === item) {
+              itemNode.tabIndex = 0
+              await this.applyDOMChangesFn()
+              itemNode.focus()
             } else {
-                handleButtonClick();
+              itemNode.tabIndex = -1
             }
-        };
-
-        /**
-         * Handles click events on link elements, navigating to the specified URL and closing the dropdown if necessary.
-         *
-         * @param {HTMLElement} linkElement - The link element that was clicked.
-         */
-        const handleLinkClick = (linkElement) => {
-            const href = linkElement.getAttribute('href');
-            const isExternal = linkElement.getAttribute('data-external') === 'true';
-
-            if (href) {
-                if (isExternal) {
-                    window.open(href, '_blank');
-                } else {
-                    window.location.href = href;
-                }
-            }
-            closeMenu();
-        };
-
-        // Handles click events on button items, closing the dropdown if necessary.
-        const handleButtonClick = () => {
-            closeMenu();
-        };
-
-        // Toggles the dropdown open/close state.
-        const toggleDropdown = () => {
-            open = !open
-            const ariaExpanded = open ? 'true' : 'false'
-            node
-                .querySelector('.gdd_button')
-                .setAttribute('aria-expanded', ariaExpanded)
-
-            const ulElement = node.querySelector('ul[role="menu"]')
-            if (!ulElement) return
-
-            const currentState = ulElement.getAttribute('data-state')
-            ulElement.setAttribute(
-                'data-state',
-                currentState === 'open' ? 'close' : 'open'
-            )
-
-            if(animated) {
-                const svgElement = node.querySelector('svg');
-                svgElement.classList.toggle('iconToOpen', currentState === 'close');
-                svgElement.classList.toggle('iconToClose', currentState === 'open');
-            }
-        }
-
-        const closeMenu = () => {
-            toggleDropdown()
-            node.focus()
-        }
-
-        /** ***************** START - Event Handlers ******************************************** */
-        // Button click event handler.
-        const onButtonClick = (e) => {
-            e.stopPropagation()
-            e.preventDefault()
-            toggleDropdown()
-            if (open) focusManager.setFocusToFirstItem()
-        }
-
-        // Button keydown event handler.
-        const onButtonKeydown = (e) => {
-            e.stopPropagation()
-            e.preventDefault()
-            switch (e.code) {
-                case 'Space':
-                case 'Enter':
-                case 'Down':
-                case 'ArrowDown':
-                    if(!open){ // handle not open by default
-                        toggleDropdown()
-                    }
-                    focusManager.setFocusToFirstItem()
-                    break
-                case 'Up':
-                case 'ArrowUp':
-                    if(!open){ // handle not open by default
-                        toggleDropdown()
-                    }
-                    focusManager.setFocusToLastItem()
-                    break
-                case 'Tab':
-                    node.blur()
-                    break
-                default:
-                    break
-            }
-        }
-
-        // Item click event handler.
-        const onItemClick = handleClickOnItem;
-
-        // Item keydown event handler.
-        const onItemKeydown = (e) => {
-            e.stopPropagation()
-            e.preventDefault()
-            const target = e.currentTarget
-
-            if (e.shiftKey) {
-                if (isChar(e.key)) {
-                    focusManager.setFocusByFirstChar(target, e.key)
-                }
-            } else {
-                switch (e.code) {
-                    case 'Space':
-                    case 'Enter':
-                        handleClickOnItem(e)
-                        break
-                    case 'Esc':
-                    case 'Escape':
-                        closeMenu()
-                        dropdownBtn.focus()
-                        break
-                    case 'Up':
-                    case 'ArrowUp':
-                        focusManager.setFocusToPreviousItem(target)
-                        break
-                    case 'Down':
-                    case 'ArrowDown':
-                        focusManager.setFocusToNextItem(target)
-                        break
-                    case 'Home':
-                    case 'PageUp':
-                        focusManager.setFocusToFirstItem()
-                        break
-                    case 'End':
-                    case 'PageDown':
-                        focusManager.setFocusToLastItem()
-                        break
-                    default:
-                        if (isChar(e.key)) {
-                            focusManager.setFocusByFirstChar(target, e.key)
-                        }
-                }
-            }
-        }
-
-        // Item mouseover event handler.
-        const onItemMouseOver = (e) => {
-            const target = e.currentTarget
-            target.focus()
-        }
-        /** ***************** END - Event Handlers ******************************************** */
-
-      const dropdownBtn = node.querySelector(".gdd_button")
-      if (options?.enabled) {
-        initialize()
-        node.addEventListener('click', onButtonClick)
-        node.addEventListener('keydown', onButtonKeydown)
-
-        const menuItemNodes = Array.from(node.querySelectorAll('[role="menuitem"]'))
-
-        menuItemNodes.forEach((item) => {
-          item.addEventListener('keydown', onItemKeydown)
-          item.addEventListener('mouseover', onItemMouseOver)
-          item.addEventListener('click', onItemClick)
-          listGroups[componentId].push(item)
-
-          const extractFirstChar = (item) => {
-            const textContent = item.textContent?.split('\n').pop().trim();
-            const firstChar = textContent ? textContent.trim().toLowerCase()[0] : null;
-            return firstChar;
-          };
-          const contentFirstChar = extractFirstChar(item)
-          if (contentFirstChar) firstChars[componentId].push(contentFirstChar)
-
-            if (!firstItem[componentId]) {
-              firstItem[componentId] = item
-            }
-            lastItem[componentId] = item
           })
+        )
+      }
+    }
+  }
 
-          focusManager.items = listGroups
-          focusManager.firstChars = firstChars
-          focusManager.firstItem = firstItem
-          focusManager.lastItem = lastItem
+  /**
+  * Initializes accessibility actions for a dropdown component.
+  * @param {HTMLElement} node - The root element of the dropdown component.
+  * @param {object} options - Options for configuring the accessibility actions.
+  * @param {boolean} options.enabled - Flag indicating if the accessibility actions on the dropdown should be enabled.
+  * @param {boolean} options.open - Flag indicating if the dropdown is initially open.
+  * @param {boolean} options.animated - Flag indicating if the dropdown menu button should use icon animations.
+  */
+  function a11yActions(node, options) {
+    let open = options?.open
+    const animated = options?.animated
+    const componentId = node.getAttribute("id");
+    const focusManager = new ComponentFocusManager(componentId)
+    const listGroups = {}
+    const firstChars = {}
+    const firstItem = {}
+    const lastItem = {}
 
-          // set the focus on the button when open by default.
-          if (open) {
-            dropdownBtn.focus()
+    // Initializes the dropdown component.
+    const initialize = () => {
+      listGroups[componentId] = []
+      firstChars[componentId] = []
+      firstItem[componentId] = null
+      lastItem[componentId] = null
+    }
+
+    /**
+      * Checks if the given target element is a link (anchor tag).
+      *
+      * @param {HTMLElement} target - The target element to check.
+      * @returns {boolean} Returns true if the target element is a link, otherwise false.
+      */
+    const isLinkElement = (target) => {
+      return target.tagName === 'A';
+    };
+
+    /**
+      * Handles click events on dropdown items, performing appropriate actions based on the type of item.
+      *
+      * @param {Event} e - The click event.
+      */
+    const handleClickOnItem = (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+
+      if (isLinkElement(e.target)) {
+        handleLinkClick(e.target);
+      } else {
+        handleButtonClick();
+      }
+    };
+
+    /**
+      * Handles click events on link elements, navigating to the specified URL and closing the dropdown if necessary.
+      *
+      * @param {HTMLElement} linkElement - The link element that was clicked.
+      */
+    const handleLinkClick = (linkElement) => {
+      const href = linkElement.getAttribute('href');
+      const isExternal = linkElement.getAttribute('data-external') === 'true';
+
+      if (href) {
+        if (isExternal) {
+          window.open(href, '_blank');
+        } else {
+          window.location.href = href;
+        }
+      }
+      closeMenu();
+    };
+
+    // Handles click events on button items, closing the dropdown if necessary.
+    const handleButtonClick = () => {
+      closeMenu();
+    };
+
+    // Toggles the dropdown open/close state.
+    const toggleDropdown = () => {
+      open = !open
+      const ariaExpanded = open ? 'true' : 'false'
+      node
+        .querySelector('.gdd_button')
+        .setAttribute('aria-expanded', ariaExpanded)
+
+      const ulElement = node.querySelector('ul[role="menu"]')
+      if (!ulElement) return
+
+      const currentState = ulElement.getAttribute('data-state')
+      ulElement.setAttribute(
+        'data-state',
+        currentState === 'open' ? 'close' : 'open'
+      )
+
+      if (animated) {
+        const svgElement = node.querySelector('svg');
+        svgElement.classList.toggle('iconToOpen', currentState === 'close');
+        svgElement.classList.toggle('iconToClose', currentState === 'open');
+      }
+    }
+
+    const closeMenu = () => {
+      toggleDropdown()
+      node.focus()
+    }
+
+    /** ***************** START - Event Handlers ******************************************** */
+    // Button click event handler.
+    const onButtonClick = (e) => {
+      e.stopPropagation()
+      e.preventDefault()
+      toggleDropdown()
+      if (open) focusManager.setFocusToFirstItem()
+    }
+
+    // Button keydown event handler.
+    const onButtonKeydown = (e) => {
+      e.stopPropagation()
+      e.preventDefault()
+      switch (e.code) {
+        case 'Space':
+        case 'Enter':
+        case 'Down':
+        case 'ArrowDown':
+          if (!open) { // handle not open by default
+            toggleDropdown()
           }
+          focusManager.setFocusToFirstItem()
+          break
+        case 'Up':
+        case 'ArrowUp':
+          if (!open) { // handle not open by default
+            toggleDropdown()
+          }
+          focusManager.setFocusToLastItem()
+          break
+        case 'Tab':
+          node.blur()
+          break
+        default:
+          break
       }
     }
 
-    /**
-     * Handles the action to close the dropdown when clicked outside of it.
-     * @param {MouseEvent} e - The event object generated by the click action.
-     * @param {object} options - Options for configuring the accessibility actions.
-     * @param {boolean} options.animated - Flag indicating if the dropdown menu button should use icon animations.
-     */
-    function clickOutsideAction(e, options) {
-        const animated = options?.animated || true
-        const dropdownContainer = document.querySelector('[class*="gddContainer"]')
-        if (!dropdownContainer) return
+    // Item click event handler.
+    const onItemClick = handleClickOnItem;
 
-        const isClickedInsideDropdown = dropdownContainer.contains(e.target)
-        if (!isClickedInsideDropdown) {
-            dropdownBtn = dropdownContainer.querySelector('[class*="gddButton"]')
-            dropdownBtn.setAttribute('aria-expanded', false)
+    // Item keydown event handler.
+    const onItemKeydown = (e) => {
+      e.stopPropagation()
+      e.preventDefault()
+      const target = e.currentTarget
 
-            if (animated) {
-                const svgElement = dropdownBtn.querySelector('svg')
-                svgElement.classList.remove('iconToOpen')
-                svgElement.classList.remove('iconToClose')
+      if (e.shiftKey) {
+        if (isChar(e.key)) {
+          focusManager.setFocusByFirstChar(target, e.key)
+        }
+      } else {
+        switch (e.code) {
+          case 'Space':
+          case 'Enter':
+            handleClickOnItem(e)
+            break
+          case 'Esc':
+          case 'Escape':
+            closeMenu()
+            dropdownBtn.focus()
+            break
+          case 'Up':
+          case 'ArrowUp':
+            focusManager.setFocusToPreviousItem(target)
+            break
+          case 'Down':
+          case 'ArrowDown':
+            focusManager.setFocusToNextItem(target)
+            break
+          case 'Home':
+          case 'PageUp':
+            focusManager.setFocusToFirstItem()
+            break
+          case 'End':
+          case 'PageDown':
+            focusManager.setFocusToLastItem()
+            break
+          default:
+            if (isChar(e.key)) {
+              focusManager.setFocusByFirstChar(target, e.key)
             }
-
-            const ulElement = dropdownContainer.querySelector('ul[role="menu"]')
-            if (!ulElement) return
-
-            ulElement.setAttribute('data-state','close' )
-        }
-    }
-
-    document.body.addEventListener('click', clickOutsideAction);
-
-    document.addEventListener('DOMContentLoaded', function () {
-      // Loop over all tabber components in the page and initialise them.
-      for (const key in configMap.Data) {
-        const gropdownConfig = configMap.Data[key];
-        const containerNode = document.getElementById(` + "`" + `gropdown-container-${key}` + "`" + `);
-
-        if (containerNode !== null) {
-          a11yActions(containerNode, {
-            enabled: true,
-            open: gropdownConfig.Open,
-            animated: gropdownConfig.Animation,
-          })
         }
       }
-    });
+    }
+
+    // Item mouseover event handler.
+    const onItemMouseOver = (e) => {
+      const target = e.currentTarget
+      target.focus()
+    }
+    /** ***************** END - Event Handlers ******************************************** */
+
+    const dropdownBtn = node.querySelector(".gdd_button")
+    if (options?.enabled) {
+      initialize()
+      node.addEventListener('click', onButtonClick)
+      node.addEventListener('keydown', onButtonKeydown)
+
+      const menuItemNodes = Array.from(node.querySelectorAll('[role="menuitem"]'))
+
+      menuItemNodes.forEach((item) => {
+        item.addEventListener('keydown', onItemKeydown)
+        item.addEventListener('mouseover', onItemMouseOver)
+        item.addEventListener('click', onItemClick)
+        listGroups[componentId].push(item)
+
+        const extractFirstChar = (item) => {
+          const textContent = item.textContent?.split('\n').pop().trim();
+          const firstChar = textContent ? textContent.trim().toLowerCase()[0] : null;
+          return firstChar;
+        };
+        const contentFirstChar = extractFirstChar(item)
+        if (contentFirstChar) firstChars[componentId].push(contentFirstChar)
+
+        if (!firstItem[componentId]) {
+          firstItem[componentId] = item
+        }
+        lastItem[componentId] = item
+      })
+
+      focusManager.items = listGroups
+      focusManager.firstChars = firstChars
+      focusManager.firstItem = firstItem
+      focusManager.lastItem = lastItem
+
+      // set the focus on the button when open by default.
+      if (open) {
+        dropdownBtn.focus()
+      }
+    }
+  }
+
+  /**
+  * Handles the action to close the dropdown when clicked outside of it.
+  * @param {MouseEvent} e - The event object generated by the click action.
+  * @param {object} options - Options for configuring the accessibility actions.
+  * @param {boolean} options.animated - Flag indicating if the dropdown menu button should use icon animations.
+  */
+  function clickOutsideAction(e, options) {
+    const animated = options?.animated || true
+    const dropdownContainer = document.querySelector('[class*="gddContainer"]')
+    if (!dropdownContainer) return
+
+    const isClickedInsideDropdown = dropdownContainer.contains(e.target)
+    if (!isClickedInsideDropdown) {
+      dropdownBtn = dropdownContainer.querySelector('[class*="gddButton"]')
+      dropdownBtn.setAttribute('aria-expanded', false)
+
+      if (animated) {
+        const svgElement = dropdownBtn.querySelector('svg')
+        svgElement.classList.remove('iconToOpen')
+        svgElement.classList.remove('iconToClose')
+      }
+
+      const ulElement = dropdownContainer.querySelector('ul[role="menu"]')
+      if (!ulElement) return
+
+      ulElement.setAttribute('data-state', 'close')
+    }
+  }
+
+  document.body.addEventListener('click', clickOutsideAction);
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Loop over all tabber components in the page and initialise them.
+    for (const key in configMap.Data) {
+      const gropdownConfig = configMap.Data[key];
+      const containerNode = document.getElementById(` + "`" + `gropdown-container-${key}` + "`" + `);
+
+      if (containerNode !== null) {
+        a11yActions(containerNode, {
+          enabled: true,
+          open: gropdownConfig.Open,
+          animated: gropdownConfig.Animation,
+        })
+      }
+    }
+  });
+
 }`,
-		Call:       templ.SafeScript(`__templ_GropdownJS_c9d1`, configMap),
-		CallInline: templ.SafeScriptInline(`__templ_GropdownJS_c9d1`, configMap),
+		Call:       templ.SafeScript(`__templ_GropdownJS_c80d`, configMap),
+		CallInline: templ.SafeScriptInline(`__templ_GropdownJS_c80d`, configMap),
 	}
 }
