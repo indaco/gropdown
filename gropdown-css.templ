@@ -141,84 +141,104 @@ templ GropdownCSS() {
       --gdd-item-divider-style: solid;
     }
 
-    :root[data-theme="light"] {
-      --gdd-button-color: var(--gdd-primary-darker);
-      --gdd-button-color-hover: var(--gdd-primary-darkest);
-      --gdd-button-bg-color: var(--gdd-primary-lightest);
-      --gdd-button-bg-color-hover: var(--gdd-primary-lighter);
-      --gdd-button-border-color: transparent;
-      --gdd-button-ring-color: var(--gdd-primary-light);
-
-      --gdd-content-bg-color: #FFFFFF;
-      --gdd-content-border-color: var(--gdd-primary-lighter);
-
-      --gdd-item-color: var(--gdd-primary-darkest);
-      --gdd-item-color-hover: var(--gdd-primary-darkest);
-      --gdd-item-bg-color: transparent;
-      --gdd-item-bg-color-hover: var(--gdd-primary-lighter);
-
-      --gdd-item-divider-color: var(--gdd-primary-lighter);
-    }
-
-    :root[data-theme="dark"] {
-      --gdd-button-color: var(--gdd-primary-lightest);
-      --gdd-button-color-hover: var(--gdd-primary-lightest);
-      --gdd-button-bg-color: var(--gdd-primary-darker);
-      --gdd-button-bg-color-hover: var(--gdd-primary-dark);
-      --gdd-button-border-color: transparent;
-      --gdd-button-ring-color: var(--gdd-primary-light);
-
-      --gdd-content-bg-color: var(--gdd-primary-darker);
-      --gdd-content-border-color: var(--gdd-primary-darkest);
-
-      --gdd-item-color: var(--gdd-primary-lighter);
-      --gdd-item-color-hover: var(--gdd-primary-lighter);
-      --gdd-item-bg-color: transparent;
-      --gdd-item-bg-color-hover:  var(--gdd-primary-dark);
-
-      --gdd-item-divider-color: var(--gdd-primary);
-    }
-
     @media (prefers-color-scheme: light) {
       :root {
+        /* button */
         --gdd-button-color: var(--gdd-primary-darker);
-        --gdd-button-color-hover: var(--gdd-primary-darkest);
-        --gdd-button-bg-color: var(--gdd-primary-lightest);
-        --gdd-button-bg-color-hover: var(--gdd-primary-lighter);
+        --gdd-button-color-hover: var(--gdd-primary-darker);
+        --gdd-button-color-focus: var(--gdd-primary-darker);
+        --gdd-button-bg: var(--gdd-primary-lightest);
+        --gdd-button-bg-hover: var(--gdd-primary-lighter);
+        --gdd-button-bg-focus: var(--gdd-primary-lighter);
         --gdd-button-border-color: transparent;
         --gdd-button-ring-color: var(--gdd-primary-light);
-
-        --gdd-content-bg-color: #FFFFFF;
+        /* content */
+        --gdd-content-bg: #FFFFFF;
         --gdd-content-border-color: var(--gdd-primary-lighter);
-
-        --gdd-item-color: var(--gdd-primary-darkest);
-        --gdd-item-color-hover: var(--gdd-primary-darkest);
-        --gdd-item-bg-color: transparent;
-        --gdd-item-bg-color-hover: var(--gdd-primary-lighter);
-
-        --gdd-item-divider-color: var(--gdd-primary-lighter);
+        /* item */
+        --gdd-item-color: var(--gdd-primary-dark);
+        --gdd-item-color-hover: var(--gdd-primary-darker);
+        --gdd-item-color-focus: var(--gdd-primary-darker);
+        --gdd-item-bg: transparent;
+        --gdd-item-bg-hover: var(--gdd-primary-lightest);
+        --gdd-item-bg-focus: var(--gdd-primary-lightest);
+        /* divider */
+        --gdd-divider-color: var(--gdd-primary-lighter);
       }
     }
 
     @media (prefers-color-scheme: dark){
       :root {
-        --gdd-button-color: var(--gdd-primary-lightest);
-        --gdd-button-color-hover: var(--gdd-primary-lightest);
-        --gdd-button-bg-color: var(--gdd-primary-darker);
-        --gdd-button-bg-color-hover: var(--gdd-primary-dark);
+        /* button */
+        --gdd-button-color: var(--gdd-primary-lighter);
+        --gdd-button-color-hover: var(--gdd-primary-lighter);
+        --gdd-button-color-focus: var(--gdd-primary-lighter);
+        --gdd-button-bg: var(--gdd-primary-dark);
+        --gdd-button-bg-hover: var(--gdd-primary-darker);
+        --gdd-button-bg-focus: var(--gdd-primary-darker);
         --gdd-button-border-color: transparent;
-        --gdd-button-ring-color: var(--gdd-primary-light);
-
-        --gdd-content-bg-color: var(--gdd-primary-darker);
+        --gdd-button-ring-color: var(--gdd-primary);
+        /* content */
+        --gdd-content-bg: var(--gdd-primary-darker);
         --gdd-content-border-color: var(--gdd-primary-darkest);
-
-        --gdd-item-color: var(--gdd-primary-lighter);
-        --gdd-item-color-hover: var(--gdd-primary-lighter);
-        --gdd-item-bg-color: transparent;
-        --gdd-item-bg-color-hover:  var(--gdd-primary-dark);
-
-        --gdd-item-divider-color: var(--gdd-primary);
+        /* item */
+        --gdd-item-color: var(--gdd-primary-light);
+        --gdd-item-color-hover: var(--gdd-primary-lightest);
+        --gdd-item-color-focus: var(--gdd-primary-lightest);
+        --gdd-item-bg: transparent;
+        --gdd-item-bg-hover:  var(--gdd-primary-60);
+        --gdd-item-bg-focus:  var(--gdd-primary-60);
+        /* divider */
+        --gdd-divider-color: var(--gdd-primary);
       }
+    }
+
+    :root[data-theme="light"] {
+      /* button */
+      --gdd-button-color: var(--gdd-primary-darker);
+      --gdd-button-color-hover: var(--gdd-primary-darker);
+      --gdd-button-color-focus: var(--gdd-primary-darker);
+      --gdd-button-bg: var(--gdd-primary-lightest);
+      --gdd-button-bg-hover: var(--gdd-primary-lighter);
+      --gdd-button-bg-focus: var(--gdd-primary-lighter);
+      --gdd-button-border-color: transparent;
+      --gdd-button-ring-color: var(--gdd-primary-light);
+      /* content */
+      --gdd-content-bg: #FFFFFF;
+      --gdd-content-border-color: var(--gdd-primary-lighter);
+      /* item */
+      --gdd-item-color: var(--gdd-primary-dark);
+      --gdd-item-color-hover: var(--gdd-primary-darker);
+      --gdd-item-color-focus: var(--gdd-primary-darker);
+      --gdd-item-bg: transparent;
+      --gdd-item-bg-hover: var(--gdd-primary-lightest);
+      --gdd-item-bg-focus: var(--gdd-primary-lightest);
+      /* divider */
+      --gdd-divider-color: var(--gdd-primary-lighter);
+    }
+
+    :root[data-theme="dark"] {
+      /* button */
+      --gdd-button-color: var(--gdd-primary-lighter);
+      --gdd-button-color-hover: var(--gdd-primary-lighter);
+      --gdd-button-color-focus: var(--gdd-primary-lighter);
+      --gdd-button-bg: var(--gdd-primary-dark);
+      --gdd-button-bg-hover: var(--gdd-primary-darker);
+      --gdd-button-bg-focus: var(--gdd-primary-darker);
+      --gdd-button-border-color: transparent;
+      --gdd-button-ring-color: var(--gdd-primary);
+      /* content */
+      --gdd-content-bg: var(--gdd-primary-darker);
+      --gdd-content-border-color: var(--gdd-primary-darkest);
+      /* item */
+      --gdd-item-color: var(--gdd-primary-light);
+      --gdd-item-color-hover: var(--gdd-primary-lightest);
+      --gdd-item-color-focus: var(--gdd-primary-lightest);
+      --gdd-item-bg: transparent;
+      --gdd-item-bg-hover:  var(--gdd-primary-60);
+      --gdd-item-bg-focus:  var(--gdd-primary-60);
+      /* divider */
+      --gdd-divider-color: var(--gdd-primary);
     }
 
     /* ********************************************* *
@@ -249,7 +269,7 @@ templ GropdownCSS() {
       border-style: var(--gdd-button-border-style);
       border-color: var(--gdd-button-border-color);
       border-radius: var(--gdd-button-border-radius);
-      background-color: var(--gdd-button-bg-color);
+      background-color: var(--gdd-button-bg);
       font-family: var(--gdd-button-font-family);
       font-size: var(--gdd-button-font-size);
       font-weight: var(--gdd-button-font-weight);
@@ -261,14 +281,14 @@ templ GropdownCSS() {
     }
 
     .gdd_button:hover {
-      color: var(--gdd-button-color-hover);
-      background-color: var(--gdd-button-bg-color-hover);
+      --gdd-button-color: var(--gdd-button-color-hover);
+      --gdd-button-bg: var(--gdd-button-bg-hover);
     }
 
     .gdd_button:focus,
     .gdd_button:focus-visible {
-      color: var(--gdd-button-color-hover);
-      background-color: var(--gdd-button-bg-color-hover);
+      --gdd-button-color: var(--gdd-button-color-focus);
+      --gdd-button-bg: var(--gdd-button-bg-focus);
       outline: var(--gdd-button-ring-color) var(--gdd-button-ring-style) var(--gdd-button-ring-width);
       outline-offset: var(--gdd-button-ring-offset);
     }
@@ -292,11 +312,11 @@ templ GropdownCSS() {
 
     /* Apply animations based on classes */
     .iconToOpen {
-        animation: var(--gdd-button-animation-open-name) 0.3s ease forwards;
+      animation: var(--gdd-button-animation-open-name) 0.3s ease forwards;
     }
 
     .iconToClose {
-        animation: var(--gdd-button-animation-close-name) 0.3s ease forwards;
+      animation: var(--gdd-button-animation-close-name) 0.3s ease forwards;
     }
 
     /* ********************************************* *
@@ -311,7 +331,7 @@ templ GropdownCSS() {
       max-width: var(--gdd-content-max-w);
       margin: var(--gdd-content-my) var(--gdd-content-mx);
       padding: var(--gdd-content-py) var(--gdd-content-px);
-      background-color: var(--gdd-content-bg-color);
+      background-color: var(--gdd-content-bg);
       border-width: var(--gdd-content-border-width);
       border-style: var(--gdd-content-border-style);
       border-color: var(--gdd-content-border-color);
@@ -323,29 +343,29 @@ templ GropdownCSS() {
     }
 
     [data-position="top"] .gdd_content {
-        top: auto;
-        bottom: 100%;
+      top: auto;
+      bottom: 100%;
     }
 
     [data-position="bottom"] .gdd_content {
-        top: 100%;
-        bottom: auto;
+      top: 100%;
+      bottom: auto;
     }
 
     [data-position="left"] .gdd_content {
-        --gdd-content-my: 0;
-        --gdd-content-mx: 0.25rem;
-        inset-inline-end: 100%;
-        top: 0;
-        bottom: auto;
+      --gdd-content-my: 0;
+      --gdd-content-mx: 0.25rem;
+      inset-inline-end: 100%;
+      top: 0;
+      bottom: auto;
     }
 
     [data-position="right"] .gdd_content {
-        --gdd-content-my: 0;
-        --gdd-content-mx: 0.25rem;
-        inset-inline-start: 100%;
-        top: 0;
-        bottom: auto;
+      --gdd-content-my: 0;
+      --gdd-content-mx: 0.25rem;
+      inset-inline-start: 100%;
+      top: 0;
+      bottom: auto;
     }
 
     .gdd_content[data-state="open"] {
@@ -374,28 +394,29 @@ templ GropdownCSS() {
       font-size: var(--gdd-item-font-size);
       line-height: var(--gdd-item-line-height);
       letter-spacing: var(--gdd-item-letter-spacing);
-      background-color: var(--gdd-item-bg-color);
+      background-color: var(--gdd-item-bg);
       border-width: var(--gdd-item-border-width);
       border-style: var(--gdd-item-border-style);
       border-color: var(--gdd-item-border-color);
       border-radius: var(--gdd-item-border-radius);
-      }
+    }
 
     .gdd_content_item[href^="http"] {
-        padding-right: 1.25em;
+      padding-right: 1.25em;
     }
 
     .gdd_content_item:hover {
-        color: var(--gdd-item-color-hover);
-        background-color: var(--gdd-item-bg-color-hover);
+      --gdd-item-color: var(--gdd-item-color-hover);
+      --gdd-item-bg: var(--gdd-item-bg-hover);
     }
 
     .gdd_content_item:focus,
     .gdd_content_item:focus-visible {
-        color: var(--gdd-item-color-hover);
-        background-color: var(--gdd-item-bg-color-hover);
-        outline: var(--gdd-item-ring-color) var(--gdd-item-ring-style) var(--gdd-item-ring-width);
-        outline-offset: var(--gdd-item-ring-offset);
+      --gdd-item-color: var(--gdd-item-color-focus);
+      --gdd-item-bg: var(--gdd-item-bg-focus);
+      outline: var(--gdd-item-ring-color) var(--gdd-item-ring-style) var(--gdd-item-ring-width);
+      outline-offset: var(--gdd-item-ring-offset);
+      opacity: 1;
     }
 
     .gdd_content_item_icon {
@@ -410,7 +431,7 @@ templ GropdownCSS() {
       height: 0;
       margin: 0.125rem 0;
       overflow: hidden;
-      border-top: var(--gdd-item-divider-width) var(--gdd-item-divider-style) var(--gdd-item-divider-color);
+      border-top: var(--gdd-item-divider-width) var(--gdd-item-divider-style) var(--gdd-divider-color);
     }
 
     .gdd_sr_only {
@@ -429,33 +450,33 @@ templ GropdownCSS() {
      * Animations
      * ********************************************* */
     @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
+      from {
+        opacity: 0;
+      }
 
-        to {
-            opacity: 1;
-        }
+      to {
+        opacity: 1;
+      }
     }
 
     @keyframes flipInX {
-        from {
-            transform: scaleY(-1);
-        }
+      from {
+        transform: scaleY(-1);
+      }
 
-        to {
-            transform: scaleY(1);
-        }
+      to {
+        transform: scaleY(1);
+      }
     }
 
     @keyframes flipOutX {
-        from {
-            transform: scaleY(1);
-        }
+      from {
+        transform: scaleY(1);
+      }
 
-        to {
-            transform: scaleY(-1);
-        }
+      to {
+        transform: scaleY(-1);
+      }
     }
 </style>
 }
