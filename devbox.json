@@ -1,11 +1,11 @@
 {
-  "$schema": "https://raw.githubusercontent.com/jetpack-io/devbox/0.10.5/.schema/devbox.schema.json",
+  "$schema": "https://raw.githubusercontent.com/jetpack-io/devbox/0.10.6/.schema/devbox.schema.json",
   "packages": [
     "git@latest",
     "go@latest",
     "golangci-lint@latest",
-    "gnumake",
-    "templ@latest"
+    "templ@latest",
+    "gnumake@latest"
   ],
   "shell": {
     "init_hook": [
@@ -15,7 +15,7 @@
     "scripts": {
       "build": ["make build"],
       "templ": ["make templ"],
-      "test": ["make test"]
+      "test":  ["make test"]
     }
   }
 }
