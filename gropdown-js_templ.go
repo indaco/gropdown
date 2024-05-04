@@ -9,8 +9,8 @@ import "github.com/a-h/templ"
 
 func GropdownJS(configMap *ConfigMap) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_GropdownJS_c80d`,
-		Function: `function __templ_GropdownJS_c80d(configMap){// Utility function to check if a value is null or undefined
+		Name: `__templ_GropdownJS_3b6c`,
+		Function: `function __templ_GropdownJS_3b6c(configMap){// Utility function to check if a value is null or undefined
   function isNullish(value) {
     return value === null || value === undefined;
   }
@@ -460,7 +460,7 @@ func GropdownJS(configMap *ConfigMap) templ.ComponentScript {
     /** ***************** END - Event Handlers ******************************************** */
 
     const dropdownBtn = node.querySelector(".gdd_button")
-    if (options?.enabled) {
+    if (dropdownBtn != null && options?.enabled) {
       initialize()
       node.addEventListener('click', onButtonClick)
       node.addEventListener('keydown', onButtonKeydown)
@@ -506,29 +506,28 @@ func GropdownJS(configMap *ConfigMap) templ.ComponentScript {
   * @param {boolean} options.animated - Flag indicating if the dropdown menu button should use icon animations.
   */
   function clickOutsideAction(e, options) {
-    const animated = options?.animated || true
-    const dropdownContainer = document.querySelector('[class*="gddContainer"]')
-    if (!dropdownContainer) return
+    const animated = options?.animated || true;
+    const idSelector = ` + "`" + `gropdown-container-${options?.id}` + "`" + `;
+    const dropdownContainer = document.getElementById(idSelector);
+    if (!dropdownContainer) return;
 
-    const isClickedInsideDropdown = dropdownContainer.contains(e.target)
+    const isClickedInsideDropdown = dropdownContainer.contains(e.target);
     if (!isClickedInsideDropdown) {
-      dropdownBtn = dropdownContainer.querySelector('[class*="gddButton"]')
-      dropdownBtn.setAttribute('aria-expanded', false)
+      dropdownBtn = dropdownContainer.querySelector('.gdd_button');
+      dropdownBtn.setAttribute('aria-expanded', false);
 
       if (animated) {
-        const svgElement = dropdownBtn.querySelector('svg')
-        svgElement.classList.remove('iconToOpen')
-        svgElement.classList.remove('iconToClose')
+        const svgElement = dropdownBtn.querySelector('svg');
+        svgElement.classList.remove('iconToOpen');
+        svgElement.classList.remove('iconToClose');
       }
 
-      const ulElement = dropdownContainer.querySelector('ul[role="menu"]')
-      if (!ulElement) return
+      const ulElement = dropdownContainer.querySelector('ul[role="menu"]');
+      if (!ulElement) return;
 
-      ulElement.setAttribute('data-state', 'close')
+      ulElement.setAttribute('data-state', 'close');
     }
   }
-
-  document.body.addEventListener('click', clickOutsideAction);
 
   document.addEventListener('DOMContentLoaded', function() {
     // Loop over all tabber components in the page and initialise them.
@@ -541,13 +540,20 @@ func GropdownJS(configMap *ConfigMap) templ.ComponentScript {
           enabled: true,
           open: gropdownConfig.Open,
           animated: gropdownConfig.Animation,
-        })
+        });
+
+        if(configMap.Data[key].CloseOnOutsideClick) {
+          // Add event listener to each container
+          document.body.addEventListener('click', function(e) {
+            clickOutsideAction(e,{id: key} );
+          });
+        }
       }
     }
   });
 
 }`,
-		Call:       templ.SafeScript(`__templ_GropdownJS_c80d`, configMap),
-		CallInline: templ.SafeScriptInline(`__templ_GropdownJS_c80d`, configMap),
+		Call:       templ.SafeScript(`__templ_GropdownJS_3b6c`, configMap),
+		CallInline: templ.SafeScriptInline(`__templ_GropdownJS_3b6c`, configMap),
 	}
 }

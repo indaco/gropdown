@@ -451,7 +451,7 @@ script GropdownJS(configMap *ConfigMap) {
     /** ***************** END - Event Handlers ******************************************** */
 
     const dropdownBtn = node.querySelector(".gdd_button")
-    if (options?.enabled) {
+    if (dropdownBtn != null && options?.enabled) {
       initialize()
       node.addEventListener('click', onButtonClick)
       node.addEventListener('keydown', onButtonKeydown)
@@ -497,29 +497,28 @@ script GropdownJS(configMap *ConfigMap) {
   * @param {boolean} options.animated - Flag indicating if the dropdown menu button should use icon animations.
   */
   function clickOutsideAction(e, options) {
-    const animated = options?.animated || true
-    const dropdownContainer = document.querySelector('[class*="gddContainer"]')
-    if (!dropdownContainer) return
+    const animated = options?.animated || true;
+    const idSelector = `gropdown-container-${options?.id}`;
+    const dropdownContainer = document.getElementById(idSelector);
+    if (!dropdownContainer) return;
 
-    const isClickedInsideDropdown = dropdownContainer.contains(e.target)
+    const isClickedInsideDropdown = dropdownContainer.contains(e.target);
     if (!isClickedInsideDropdown) {
-      dropdownBtn = dropdownContainer.querySelector('[class*="gddButton"]')
-      dropdownBtn.setAttribute('aria-expanded', false)
+      dropdownBtn = dropdownContainer.querySelector('.gdd_button');
+      dropdownBtn.setAttribute('aria-expanded', false);
 
       if (animated) {
-        const svgElement = dropdownBtn.querySelector('svg')
-        svgElement.classList.remove('iconToOpen')
-        svgElement.classList.remove('iconToClose')
+        const svgElement = dropdownBtn.querySelector('svg');
+        svgElement.classList.remove('iconToOpen');
+        svgElement.classList.remove('iconToClose');
       }
 
-      const ulElement = dropdownContainer.querySelector('ul[role="menu"]')
-      if (!ulElement) return
+      const ulElement = dropdownContainer.querySelector('ul[role="menu"]');
+      if (!ulElement) return;
 
-      ulElement.setAttribute('data-state', 'close')
+      ulElement.setAttribute('data-state', 'close');
     }
   }
-
-  document.body.addEventListener('click', clickOutsideAction);
 
   document.addEventListener('DOMContentLoaded', function() {
     // Loop over all tabber components in the page and initialise them.
@@ -532,7 +531,14 @@ script GropdownJS(configMap *ConfigMap) {
           enabled: true,
           open: gropdownConfig.Open,
           animated: gropdownConfig.Animation,
-        })
+        });
+
+        if(configMap.Data[key].CloseOnOutsideClick) {
+          // Add event listener to each container
+          document.body.addEventListener('click', function(e) {
+            clickOutsideAction(e,{id: key} );
+          });
+        }
       }
     }
   });
