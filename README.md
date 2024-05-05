@@ -1,37 +1,41 @@
 <h1 align="center" style="font-size: 2.5rem;">
   gropdown
 </h1>
-<h2 align="center" style="font-size: 1.5rem;">
-A fully accessible, configurable and themeable server-rendered dropdown component for Go web applications.
-</h2>
 <p align="center">
-    <a href="https://github.com/indaco/gropdown/blob/main/LICENSE" target="_blank">
-        <img src="https://img.shields.io/badge/license-mit-blue?style=flat-square&logo=none" alt="license" />
-    </a>
-     &nbsp;
-     <a href="https://goreportcard.com/report/github.com/indaco/gropdown/" target="_blank">
-        <img src="https://goreportcard.com/badge/github.com/indaco/gropdown" alt="go report card" />
-    </a>
-    &nbsp;
-    <a href="https://pkg.go.dev/github.com/indaco/gropdown/" target="_blank">
-        <img src="https://pkg.go.dev/badge/github.com/indaco/gropdown/.svg" alt="go reference" />
-    </a>
-    &nbsp;
-    <a href="https://jetpack.io/devbox/docs/contributor-quickstart/" target="_blank">
-      <img
-          src="https://jetpack.io/img/devbox/shield_galaxy.svg"
-          alt="Built with Devbox"
-      />
-    </a>
+  <a href="https://github.com/indaco/gropdown/blob/main/LICENSE" target="_blank">
+    <img src="https://img.shields.io/badge/license-mit-blue?style=flat-square&logo=none" alt="license" />
+  </a>
+  &nbsp;
+  <a href="https://goreportcard.com/report/github.com/indaco/gropdown/" target="_blank">
+    <img src="https://goreportcard.com/badge/github.com/indaco/gropdown" alt="go report card" />
+  </a>
+  &nbsp;
+  <a href="https://pkg.go.dev/github.com/indaco/gropdown/" target="_blank">
+    <img src="https://pkg.go.dev/badge/github.com/indaco/gropdown/.svg" alt="go reference" />
+  </a>
+  <a href="https://www.jetify.com/devbox/docs/contributor-quickstart/">
+    <img  src="https://www.jetify.com/img/devbox/shield_moon.svg" alt="Built with Devbox" />
+  </a>
 </p>
 
-Built with [templ](https://github.com/a-h/templ) library for seamless integration with Go-based web frontends.
+<p align="center">
+  <a href="#features">Features</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#usage">Usage</a> •
+  <a href="#api-reference">API Reference</a> •
+  <a href="#accessibility-a11y">Accessibility (A11Y)</a> •
+  <a href="#theming">Theming</a> •
+  <a href="#examples">Examples</a>
+</p>
+
+A fully accessible, configurable and themeable server-rendered dropdown component for Go web applications. Built with [templ](https://github.com/a-h/templ) library for seamless integration with Go-based web frontends.
 
 ## Features
 
 - **Accessible**: Fully compliant with the [WAI-ARIA Menu Button Design Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/), to ensure accessibility for all users.
 - **No External Dependencies**: Built with native Go and the `templ` library, requiring no external dependencies.
 - **Configurable**: The component offers various configuration options to customize its behavior (e.g. positioning, open by default...)
+- **Multiple dropdown**: multiple `gropdown` components on the same page, each with its own style.
 - **Themeable**: Supports theming via CSS variables, allowing easy customization of appearance. Comes with built-in support for light and dark modes, as well as the ability to define custom themes using the `data-theme` attribute.
 - **Versatile**: Items can be buttons or links (`<a>`). When a link item is marked as _external_, a visual icon will be added to indicate it.
 
@@ -47,7 +51,7 @@ To install the Dropdown module, use the `go get` command:
 go get github.com/indaco/gropdown
 ```
 
-Ensure your project is using Go Modules (it will have a go.mod file in its root if it already does).
+Ensure your project is using Go Modules (it will have a `go.mod` file in its root if it already does).
 
 ## Usage
 
@@ -57,35 +61,84 @@ Import the Dropdown module into your project:
 import "github.com/indaco/gropdown"
 ```
 
-### Creating a Dropdown
+### Configuration & Context
+
+```go
+// Default options
+dropdownConfig := gropdown.NewConfigBuilder().Build()
+```
+
+#### Available Options
+
+Users can access each configuration option using the corresponding `With` method, such as `gropdown.WithOpen(true)` or `gropdown.WithPosition(gropdown.Left)`.
+
+| Option                | Type          | Default  | Description                                                                                                           |
+|-----------------------|---------------|----------|-----------------------------------------------------------------------------------------------------------------------|
+| `Open`                | _bool_        | `false`  | indicates whether the dropdown menu is currently open.                                                                |
+| `Placement`           | [_Placement_] | `Bottom` | indicates the position of the dropdown content relative to the button. Options: `Top`, `Bottom`, `Left`, and `Right`. |
+| `Animation`           | _bool_        | `true`   | indicates whether the dropdown button should use animations on open and close.                                        |
+| `CloseOnOutsideClick` | _bool_        | `true`   | indicates whether the dropdown should be closed when a click occurs outside of it.                                    |
+
+To allow configurations to be accessible at any level in the dropdown hierarchy and make each component on the same page function independently, `gropdown` makes use of the templ component context and the implicit `ctx` variable. You can read more about templ component context [here](https://templ.guide/syntax-and-usage/context#using-context).
+
+In your function handler, create a configuration for `gropdown` and attach it to the request context passed into the handler function.
+
+```go
+func HandleHome(w http.ResponseWriter, r *http.Request) {
+  gropdownConfig := gropdown.NewConfigBuilder().WithPlacement(gropdown.Top).Build()
+
+  configMap := gropdown.NewConfigMap()
+  configMap.Add("menu-1", gropdownConfig)
+  ctx := context.WithValue(r.Context(), gropdown.ConfigContextKey, configMap)
+  err := Page().Render(ctx, w)
+  if err != nil {
+    return
+  }
+}
+```
+
+### Dropdown Component Structure - Markup
+
+> [!IMPORTANT]
+> It is crucial to ensure that the value passed to `gropdown.Root` **matches** the one used when adding the `gropdownConfig` to the `configMap` as per step above. This ensures that multiple dropdowns on the same page function independently.
 
 ```go
 // Set the button label.
-button := gropdown.DropdownButton{Label: "Menu"}
-
-// Set the items for the Dropdown menu.
-items := []gropdown.DropdownItem{
-    {Label: "Settings", Href: "/settings"},
-    {Label: "GitHub", Href: "https://github.com", External: true},
-    {Divider: true},
-    {Label: "Button", Attrs: templ.Attributes{"onclick": "alert('Hello gropdown');"}},
+@gropdown.Root("demo") {
+  @gropdown.Button("Menu")
+  @gropdown.Content() {
+    @gropdown.Item("Profile",
+      gropdown.ItemOptions{
+        Href: "/profile",
+        Icon: profileIcon,
+      },
+    )
+    @gropdown.Item("Settings",
+      gropdown.ItemOptions{
+        Href: "/settings",
+        Icon: settingsIcon,
+      },
+    )
+    @gropdown.Divider()
+    @gropdown.Item("GitHub",
+      gropdown.ItemOptions{
+        Href:     "https://github.com",
+        External: true,
+        Icon:     globeIcon,
+      },
+    )
+    @gropdown.Divider()
+    @gropdown.Item("Button",
+      gropdown.ItemOptions{
+        Icon:  clickIcon,
+        Attrs: templ.Attributes{"onclick": "alert('Hello gropdown');"},
+      },
+    )
+  }
 }
-
-// Build the Dropdown component.
-dropdown := gropdown.NewDropdownBuilder().WithButton(button).WithItems(items)
 ```
 
-or customize the dropdown with options:
-
-```go
-// Here we set the Dropdown menu opened as default and the content positioned as absolute instead of relative.
-dropdown := gropdown.NewDropdownBuilder().SetOpen(true).SetPositionAbsolute(true)
-// Here we set the Dropdown menu opened as default and the content positioned on top.
-dropdown := gropdown.NewDropdownBuilder().SetOpen(true).SetPosition(gropdown.Top)
-dropdown.WithButton(button).WithItems(items)
-```
-
-### Add gropdown CSS and Javascript
+### CSS and Javascript
 
 `gropdown` leverages the `templ` library's features, including CSS Components and JavaScript Templates, to encapsulate all necessary styling and functionality without relying on external dependencies.
 
@@ -101,7 +154,29 @@ There are methods acting as wrappers to the templ's `templ.ToGoHTML`, generate t
 
 > Note: refer to the [Examples](#examples) section to see how to use `gropdown` with templ and `html/template`.
 
-## A11Y
+## API Reference
+
+<mark style="padding: 0.25rem; color: #6b7280; background-color: #bef264;">gropdown.<span style="font-weight: 600; color: #1f2937;">Root</span></mark>
+
+| Property | Type     | Description                                            |
+|----------|----------|--------------------------------------------------------|
+| `id`     | _string_ | The unique identifier for the dropdown menu component. |
+
+<mark style="padding: 0.25rem; color: #6b7280; background-color: #bef264;">gropdown.<span style="font-weight: 600; color: #1f2937;">Button</span></mark>
+
+| Property | Type           | Description                                          |
+|----------|----------------|------------------------------------------------------|
+| `label`  | _string_       | The text displayed for the dropdown menu button.     |
+| `icon`   | [_ButtonIcon_] | The icon displayed next to the dropdown menu button. |
+
+<mark style="padding: 0.25rem; color: #6b7280; background-color: #bef264;">gropdown.<span style="font-weight: 600; color: #1f2937;">Item</span></mark>
+
+| Property | Type            | Description                                                          |
+|----------|-----------------|----------------------------------------------------------------------|
+| `label`  | _string_        | The text displayed for the dropdown menu item.                       |
+| `opts`   | [_ItemOptions_] | The options for configuring the behavior and appearance of the item. |
+
+## Accessibility (A11Y)
 
 The dropdown component is designed to be accessible to screen readers and supports keyboard navigation according to the [WAI-ARIA pattern for menu buttons](https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/examples/menu-button-actions/#kbd_label).
 
@@ -130,100 +205,51 @@ By default, it supports both light and dark modes. In addition to the built-in m
 own custom themes using the `data-theme` attribute. Simply add a `data-theme` attribute to the root element of your application
 and define the corresponding CSS variables for your custom theme.
 
-Here below is the list of all CSS variables defined and their default values:
-
-### Dropdown Button
-
-| CSS Variable                              | Default Value                                                          | Description                                                      |
-|-------------------------------------------|------------------------------------------------------------------------|------------------------------------------------------------------|
-| `--gdd-button-min-w`                      | 4.5em                                                                  | Minimum width of the dropdown button                             |
-| `--gdd-button-py`                         | 1ch                                                                    | Padding on the y-axis of the dropdown button                     |
-| `--gdd-button-px`                         | 2ch                                                                    | Padding on the x-axis of the dropdown button                     |
-| `--gdd-button-icon-space`                 | 0.5ch                                                                  | Space between the dropdown button label and icon                 |
-| `--gdd-button-color`                      | ![Color Preview](https://via.placeholder.com/20/1f2937?text=+) #1f2937 | Text color of the dropdown button                                |
-| `--gdd-button-color-hover`                | ![Color Preview](https://via.placeholder.com/20/1f2937?text=+) #1f2937 | Text color of the dropdown button on hover                       |
-| `--gdd-button-font-size`                  | 1rem                                                                   | Font size of the dropdown button label                           |
-| `--gdd-button-font-family`                | inherit                                                                | Font family of the dropdown button label                         |
-| `--gdd-button-font-weight`                | 500                                                                    | Font weight of the dropdown button label                         |
-| `--gdd-button-line-height`                | 1.25                                                                   | Line height of the dropdown button label                         |
-| `--gdd-button-letter-spacing`             | 0.025em                                                                | Letter spacing of the dropdown button label                      |
-| `--gdd-button-bg-color`                   | ![Color Preview](https://via.placeholder.com/20/f9fafb?text=+) #f9fafb | Background color of the dropdown button                          |
-| `--gdd-button-bg-color-hover`             | ![Color Preview](https://via.placeholder.com/20/f3f4f6?text=+) #f3f4f6 | Background color of the dropdown button on hover                 |
-| `--gdd-button-border-width`               | 1px                                                                    | Border width of the dropdown button                              |
-| `--gdd-button-border-style`               | solid                                                                  | Border style of the dropdown button                              |
-| `--gdd-button-border-color`               | transparent                                                            | Border color of the dropdown button                              |
-| `--gdd-button-ring-color`                 | ![Color Preview](https://via.placeholder.com/20/e5e7eb?text=+) #e5e7eb | Color of the focus ring around the dropdown button               |
-| `--gdd-button-border-radius`              | 0.25rem                                                                | Border radius of the dropdown button                             |
-| `--gdd-button-transition-property`        | background                                                             | CSS property to transition for the dropdown button               |
-| `--gdd-button-transition-duration`        | 300ms                                                                  | Duration of the transition for the dropdown button               |
-| `--gdd-button-transition-timing-function` | cubic-bezier(0.4, 0, 0.2, 1)                                           | Timing function of the transition for the dropdown button        |
-| `--gdd-button-ring-width`                 | 1px                                                                    | Width of the focus ring around the dropdown button               |
-| `--gdd-button-ring-style`                 | solid                                                                  | Style of the focus ring around the dropdown button               |
-| `--gdd-button-ring-offset`                | 1px                                                                    | Offset of the focus ring around the dropdown button              |
-| `--gdd-button-animation-open-name`        | flipOutX                                                               | Animation property (name) for button icon when dropdown is open  |
-| `--gdd-button-animation-close-name`       | flipInX                                                                | Animation property (name) for button icon when dropdown is close |
-
-### Dropdown Content
-
-| CSS Variable                                       | Default Value                                                          | Description                                                        |
-|----------------------------------------------------|------------------------------------------------------------------------|--------------------------------------------------------------------|
-| `--gdd-content-w`                                  | 13rem                                                                  | Width of the dropdown content                                      |
-| `--gdd-content-max-w`                              | 16rem                                                                  | Maximum width of the dropdown content                              |
-| `--gdd-content-mx`                                 | 0                                                                      | Margin on the x-axis of the dropdown content                       |
-| `--gdd-content-my`                                 | 0.25rem                                                                | Margin on the y-axis of the dropdown content                       |
-| `--gdd-content-px`                                 | 0.375rem                                                               | Padding on the x-axis of the dropdown content                      |
-| `--gdd-content-py`                                 | 0.5rem                                                                 | Padding on the y-axis of the dropdown content                      |
-| `--gdd-content-bg-color`                           | ![Color Preview](https://via.placeholder.com/20/ffffff?text=+) #ffffff | Background color of the dropdown content                           |
-| `--gdd-content-border-width`                       | 1px                                                                    | Border width of the dropdown content                               |
-| `--gdd-content-border-style`                       | solid                                                                  | Border style of the dropdown content                               |
-| `--gdd-content-border-color`                       | ![Color Preview](https://via.placeholder.com/20/030712?text=+) #030712 | Border color of the dropdown content                               |
-| `--gdd-content-border-radius`                      | 0.25rem                                                                | Border radius of the dropdown content                              |
-| `--gdd-content-animation-entrance-duration`        | 0.3s                                                                   | Duration of the entrance animation for the dropdown content        |
-| `--gdd-content-animation-entrance-timing-function` | ease-in-out                                                            | Timing function of the entrance animation for the dropdown content |
-
-### Dropdown Item
-
-| CSS Variable                | Default Value                                                          | Description                                                       |
-|-----------------------------|------------------------------------------------------------------------|-------------------------------------------------------------------|
-| `--gdd-item-px`             | 0.375rem                                                               | Padding on the x-axis of the dropdown item                        |
-| `--gdd-item-py`             | 0.375rem                                                               | Padding on the y-axis of the dropdown item                        |
-| `--gdd-item-icon-space`     | 1ch                                                                    | Space between the dropdown item label and icon                    |
-| `--gdd-item-color`          | ![Color Preview](https://via.placeholder.com/20/f3f4f6?text=+) #f3f4f6 | Color of the item text                                            |
-| `--gdd-item-color-hover`    | ![Color Preview](https://via.placeholder.com/20/f3f4f6?text=+) #f3f4f6 | Color of the item text on hover                                   |
-| `--gdd-item-font-family`    | inherit                                                                | Font family of the dropdown item label                            |
-| `--gdd-item-font-size`      | 1rem                                                                   | Font size of the dropdown item label                              |
-| `--gdd-item-font-weight`    | 500                                                                    | Font weight of the dropdown item label                            |
-| `--gdd-item-line-height`    | 1.25                                                                   | Line height of the dropdown item label                            |
-| `--gdd-item-letter-spacing` | 0.025em                                                                | Letter spacing of the dropdown item label                         |
-| `--gdd-item-bg-color`       | transparent                                                            | Background color of the item                                      |
-| `--gdd-item-bg-color-hover` | ![Color Preview](https://via.placeholder.com/20/030712?text=+) #030712 | Background color of the item on hover                             |
-| `--gdd-item-border-width`   | 1px                                                                    | Border width of the dropdown item                                 |
-| `--gdd-item-border-style`   | solid                                                                  | Border style of the dropdown item                                 |
-| `--gdd-item-border-color`   | transparent                                                            | Border color of the dropdown item                                 |
-| `--gdd-item-border-radius`  | 0.25rem                                                                | Border radius of the dropdown item                                |
-| `--gdd-item-ring-width`     | 1px                                                                    | Width of the focus ring around the dropdown item                  |
-| `--gdd-item-ring-style`     | solid                                                                  | Style of the focus ring around the dropdown item                  |
-| `--gdd-item-ring-offset`    | 0                                                                      | Offset of the focus ring around the dropdown item                 |
-| `--gdd-item-ring-color`     | transparent                                                            | Color of the focus ring around the dropdown item                  |
-| `--gdd-item-divider-width`  | 1px                                                                    | Width of the divider between dropdown items                       |
-| `--gdd-item-divider-style`  | solid                                                                  | Style of the divider between dropdown items (e.g., solid, dashed) |
-| `--gdd-item-divider-color`  | ![Color Preview](https://via.placeholder.com/20/030712?text=+) #4b5563 | Color of the item divider                                         |
-
+For a comprehensive list of CSS custom properties, along with their default values and descriptions, please consult the `gropdown` [CSS custom Props](./docs/css-props.md) document.
 
 ## Examples
 
-- [use with `a-h/templ`](_examples/a-h-templ)
-- [icon only button](_examples/icon-only-button)
-- [theming](_examples/theming)
-- [positioning](_examples/positioning/)
+- [with `a-h/templ`](_examples/a-h-templ)
 - [custom animations](_examples/custom-animations)
-- [custom-button-icon](_examples/custom-button-icon)
-- [use with `template/html`](_examples/go-html-template)
+- [custom button icon](_examples/custom-button-icon)
+- [with `template/html`](_examples/go-html-template)
+- [icon only button](_examples/icon-only-button)
+- [multiple dropdowns](_examples/multiple-dropdowns/)
+- [positioning](_examples/positioning/)
+- [theming](_examples/theming)
 
 ## Contributing
 
 Contributions are welcome! Feel free to open an issue or submit a pull request.
 
+### Development Environment Setup
+
+To set up a development environment for this repository, you can use [devbox](https://www.jetify.com/devbox) along with the provided `devbox.json` configuration file.
+
+1. Install devbox by following the instructions in the [devbox documentation](https://www.jetify.com/devbox/docs/installing_devbox/).
+2. Clone this repository to your local machine.
+3. Navigate to the root directory of the cloned repository.
+4. Run `devbox install` to install all packages mentioned in the `devbox.json` file.
+5. Run `devbox shell` to start a new shell with access to the environment.
+6. Once the devbox environment is set up, you can start developing, testing, and contributing to the repository.
+
+### Using the Makefile
+
+Additionally, you can make use of the provided `Makefile` to run various tasks:
+
+```bash
+make build       # The main build target
+make examples    # Process templ files in the _examples folder
+make templ       # Process TEMPL files
+make test        # Run go tests
+make help        # Print this help message
+```
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+<!-- Resources -->
+[_ItemOptions_]: ./types.go#L22-L27
+[_ButtonIcon_]: ./types.go#L30-L33
+[_Placement_]: ./constants.go#L8-L11
