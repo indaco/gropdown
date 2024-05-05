@@ -73,7 +73,7 @@ dropdownConfig := gropdown.NewConfigBuilder().Build()
 Users can access each configuration option using the corresponding `With` method, such as `gropdown.WithOpen(true)` or `gropdown.WithPosition(gropdown.Left)`.
 
 | Option                | Type          | Default  | Description                                                                                                           |
-|-----------------------|---------------|----------|-----------------------------------------------------------------------------------------------------------------------|
+|:----------------------|:--------------|:---------|:----------------------------------------------------------------------------------------------------------------------|
 | `Open`                | _bool_        | `false`  | indicates whether the dropdown menu is currently open.                                                                |
 | `Placement`           | [_Placement_] | `Bottom` | indicates the position of the dropdown content relative to the button. Options: `Top`, `Bottom`, `Left`, and `Right`. |
 | `Animation`           | _bool_        | `true`   | indicates whether the dropdown button should use animations on open and close.                                        |
@@ -159,20 +159,20 @@ There are methods acting as wrappers to the templ's `templ.ToGoHTML`, generate t
 <mark style="padding: 0.25rem; color: #6b7280; background-color: #bef264;">gropdown.<span style="font-weight: 600; color: #1f2937;">Root</span></mark>
 
 | Property | Type     | Description                                            |
-|----------|----------|--------------------------------------------------------|
+|:---------|:---------|:-------------------------------------------------------|
 | `id`     | _string_ | The unique identifier for the dropdown menu component. |
 
 <mark style="padding: 0.25rem; color: #6b7280; background-color: #bef264;">gropdown.<span style="font-weight: 600; color: #1f2937;">Button</span></mark>
 
 | Property | Type           | Description                                          |
-|----------|----------------|------------------------------------------------------|
+|:---------|:---------------|:-----------------------------------------------------|
 | `label`  | _string_       | The text displayed for the dropdown menu button.     |
 | `icon`   | [_ButtonIcon_] | The icon displayed next to the dropdown menu button. |
 
 <mark style="padding: 0.25rem; color: #6b7280; background-color: #bef264;">gropdown.<span style="font-weight: 600; color: #1f2937;">Item</span></mark>
 
 | Property | Type            | Description                                                          |
-|----------|-----------------|----------------------------------------------------------------------|
+|:---------|:----------------|:---------------------------------------------------------------------|
 | `label`  | _string_        | The text displayed for the dropdown menu item.                       |
 | `opts`   | [_ItemOptions_] | The options for configuring the behavior and appearance of the item. |
 
