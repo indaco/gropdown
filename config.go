@@ -2,13 +2,13 @@ package gropdown
 
 // Config represents a dropdown menu component.
 type Config struct {
-	Open                bool     // Open indicates whether the dropdown menu is currently open.
-	Position            Position // Position indicates the position of the dropdown content relative to the button.
-	Animation           bool     // Animation indicates whether the dropdown button should use animations on open and close.
-	CloseOnOutsideClick bool     // CloseOnOutsideClick indicates whether the dropdown should be closes when a click occurs outside of it.
+	Open                bool      // Open indicates whether the dropdown menu is currently open.
+	Placement           Placement // Placement indicates the position of the dropdown content relative to the button.
+	Animation           bool      // Animation indicates whether the dropdown button should use animations on open and close.
+	CloseOnOutsideClick bool      // CloseOnOutsideClick indicates whether the dropdown should be closed when a click occurs outside of it.
 }
 
-// DropdownBuilder is used to construct Dropdown instances with options.
+// ConfigBuilder is used to construct Dropdown instances with options.
 type ConfigBuilder struct {
 	config Config
 }
@@ -21,7 +21,7 @@ type ConfigMap struct {
 func DefaultConfig() Config {
 	return Config{
 		Open:                false,
-		Position:            Bottom,
+		Placement:           Bottom,
 		CloseOnOutsideClick: true,
 		Animation:           true,
 	}
@@ -40,13 +40,13 @@ func (b *ConfigBuilder) WithOpen(open bool) *ConfigBuilder {
 	return b
 }
 
-// WithPosition sets the opening position fro the dropdown menu.
-func (b *ConfigBuilder) WithPosition(position Position) *ConfigBuilder {
-	b.config.Position = position
+// WithPlacement sets the opening position for the dropdown menu.
+func (b *ConfigBuilder) WithPlacement(position Placement) *ConfigBuilder {
+	b.config.Placement = position
 	return b
 }
 
-// WithCloseOnOutsideClick sets whether or not auto close when a click occurs outside of it..
+// WithCloseOnOutsideClick sets whether auto close when a click occurs outside of it..
 func (b *ConfigBuilder) WithCloseOnOutsideClick(close bool) *ConfigBuilder {
 	b.config.CloseOnOutsideClick = close
 	return b
@@ -62,7 +62,7 @@ func (b *ConfigBuilder) Build() Config {
 	return b.config
 }
 
-// Initialize a new ConfigMap instance
+// NewConfigMap initialize a new ConfigMap instance
 func NewConfigMap() *ConfigMap {
 	return &ConfigMap{
 		Data: make(map[string]Config),

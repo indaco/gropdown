@@ -10,7 +10,7 @@ import (
 )
 
 func HandleHome(w http.ResponseWriter, r *http.Request) {
-	config := gropdown.NewConfigBuilder().WithPosition(gropdown.Top).Build()
+	config := gropdown.NewConfigBuilder().WithPlacement(gropdown.Top).Build()
 	configMap := gropdown.NewConfigMap()
 	configMap.Add("demo", config)
 

@@ -3,10 +3,10 @@ package gropdown
 // ConfigContextKey is a context key for the dropdown component configurations.
 var ConfigContextKey = contextKey("gropdown-config-ctx")
 
-// Position constants define where the dropdown content will appear on the screen.
+// Placement constants define where the dropdown content will appear on the screen.
 const (
-	Top    Position = "top"
-	Right  Position = "right"
-	Bottom Position = "bottom"
-	Left   Position = "left"
+	Top    Placement = "top"
+	Right  Placement = "right"
+	Bottom Placement = "bottom"
+	Left   Placement = "left"
 )

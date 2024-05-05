@@ -6,7 +6,7 @@ templ Root(id string) {
 	<div
 		id={ toSlug(fmt.Sprintf("gropdown-container-%s", id)) }
 		class="gdd_gropdown_container"
-		data-position={ getPositionAsStringFromContextById(ctx, id) }
+		data-position={ getPlacementAsStringFromContextById(ctx, id) }
 	>
 		{ children... }
 	</div>

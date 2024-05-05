@@ -9,8 +9,8 @@ import "github.com/a-h/templ"
 
 func GropdownJS(configMap *ConfigMap) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_GropdownJS_3b6c`,
-		Function: `function __templ_GropdownJS_3b6c(configMap){// Utility function to check if a value is null or undefined
+		Name: `__templ_GropdownJS_e3ae`,
+		Function: `function __templ_GropdownJS_e3ae(configMap){// Utility function to check if a value is null or undefined
   function isNullish(value) {
     return value === null || value === undefined;
   }
@@ -553,7 +553,7 @@ func GropdownJS(configMap *ConfigMap) templ.ComponentScript {
   });
 
 }`,
-		Call:       templ.SafeScript(`__templ_GropdownJS_3b6c`, configMap),
-		CallInline: templ.SafeScriptInline(`__templ_GropdownJS_3b6c`, configMap),
+		Call:       templ.SafeScript(`__templ_GropdownJS_e3ae`, configMap),
+		CallInline: templ.SafeScriptInline(`__templ_GropdownJS_e3ae`, configMap),
 	}
 }

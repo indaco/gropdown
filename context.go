@@ -25,15 +25,15 @@ func GetConfigFromContextById(ctx context.Context, id string) *Config {
 	return &Config{}
 }
 
-// getPositionFromContextById retrieves the configured tab position from the context.
-func getPositionFromContextById(ctx context.Context, id string) Position {
+// getPlacementFromContextById retrieves the configured tab position from the context.
+func getPlacementFromContextById(ctx context.Context, id string) Placement {
 	if config, ok := GetConfigMapFromContext(ctx).Get(id); ok {
-		return config.Position
+		return config.Placement
 	}
-	return DefaultConfig().Position
+	return DefaultConfig().Placement
 }
 
-// getPositionAsStringFromContextById retrieves the configured tab position from the context.
-func getPositionAsStringFromContextById(ctx context.Context, id string) string {
-	return getPositionFromContextById(ctx, id).String()
+// getPlacementAsStringFromContextById retrieves the configured tab position from the context.
+func getPlacementAsStringFromContextById(ctx context.Context, id string) string {
+	return getPlacementFromContextById(ctx, id).String()
 }

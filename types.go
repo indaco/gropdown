@@ -2,10 +2,10 @@ package gropdown
 
 import "github.com/a-h/templ"
 
-// Position represents a position on the screen.
-type Position string
+// Placement represents a position on the screen.
+type Placement string
 
-func (p Position) String() string {
+func (p Placement) String() string {
 	return string(p)
 }
 

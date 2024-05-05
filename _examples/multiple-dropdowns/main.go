@@ -10,7 +10,7 @@ import (
 )
 
 func HandleHome(w http.ResponseWriter, r *http.Request) {
-	configOne := gropdown.NewConfigBuilder().WithPosition(gropdown.Top).Build()
+	configOne := gropdown.NewConfigBuilder().WithPlacement(gropdown.Top).Build()
 	configTwo := gropdown.NewConfigBuilder().WithCloseOnOutsideClick(false).Build()
 	configMap := gropdown.NewConfigMap()
 	configMap.Add("menu-1", configOne)
