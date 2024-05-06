@@ -85,10 +85,10 @@ In your function handler, create a configuration for `gropdown` and attach it to
 
 ```go
 func HandleHome(w http.ResponseWriter, r *http.Request) {
-  gropdownConfig := gropdown.NewConfigBuilder().WithPlacement(gropdown.Top).Build()
+  dropdownConfig := gropdown.NewConfigBuilder().WithPlacement(gropdown.Top).Build()
 
   configMap := gropdown.NewConfigMap()
-  configMap.Add("menu-1", gropdownConfig)
+  configMap.Add("menu-1", dropdownConfig)
   ctx := context.WithValue(r.Context(), gropdown.ConfigContextKey, configMap)
   err := Page().Render(ctx, w)
   if err != nil {
