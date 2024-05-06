@@ -7,9 +7,18 @@ import (
 // Define the context key type.
 type contextKey string
 
+func (k contextKey) String() string {
+	return string(k)
+}
+
 // GetConfigMapFromContext retrieves the tab configuration from the context.
 func GetConfigMapFromContext(ctx context.Context) *ConfigMap {
+	// go-staticcheck(SA1029):not use built-in type string as key for value, define your own type.
 	if opts, ok := ctx.Value(ConfigContextKey).(*ConfigMap); ok {
+		return opts
+	}
+	// When echo.Context, to get data the key must be a string.
+	if opts, ok := ctx.Value(ConfigContextKey.String()).(*ConfigMap); ok {
 		return opts
 	}
 	return &ConfigMap{
