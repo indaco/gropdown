@@ -55,6 +55,9 @@ Ensure your project is using Go Modules (it will have a `go.mod` file in its roo
 
 ## Usage
 
+> [!TIP]
+> refer to the [Examples](#examples) section.
+
 Import the Dropdown module into your project:
 
 ```go
@@ -98,6 +101,8 @@ func HandleHome(w http.ResponseWriter, r *http.Request) {
 ```
 
 ### Dropdown Component Structure - Markup
+
+In your `templ` file, defines the structure for the dropdown component.
 
 > [!IMPORTANT]
 > It is crucial to ensure that the value passed to `gropdown.Root` **matches** the one used when adding the `gropdownConfig` to the `configMap` as per step above. This ensures that multiple dropdowns on the same page function independently.
@@ -145,36 +150,42 @@ func HandleHome(w http.ResponseWriter, r *http.Request) {
 - `GropdownCSS`: it supplies the required CSS, encapsulating the visual design and layout specifics of the component.
 - `GropdownJS`: it provides the JavaScript logic essential for dynamic behaviors such as displaying, keyboard navigation and interaction with the component.
 
-To facilitate integration with Go's `template/html` standard library, `gropdown` includes a dedicated HTMLGenerator type to seamlessly integrate the component into web applications built with Go's `html/template standard` library.
+To facilitate integration with Go's `template/html` standard library, `gropdown` includes a dedicated `HTMLGenerator` type to seamlessly integrate the component into web applications built with Go's `html/template standard` library.
 
 There are methods acting as wrappers to the templ's `templ.ToGoHTML`, generate the necessary HTML to be embedded them into server-rendered pages:
 
 - `GropdownCSSToGoHTML`: render the `GropdownCSS` component into a `template.HTML` value.
 - `GropdownJSToGoHTML`: render the `GropdownJS` component into a `template.HTML` value.
 
-> Note: refer to the [Examples](#examples) section to see how to use `gropdown` with templ and `html/template`.
-
 ## API Reference
 
-<mark style="padding: 0.25rem; color: #6b7280; background-color: #bef264;">gropdown.<span style="font-weight: 600; color: #1f2937;">Root</span></mark>
+<h3 style="padding: 0.25rem; width: fit-content; color: #6b7280; background-color: #bef264;">gropdown.<span style="font-weight: 600; color: #1f2937;">Root</span></h3>
 
 | Property | Type     | Description                                            |
 |:---------|:---------|:-------------------------------------------------------|
 | `id`     | _string_ | The unique identifier for the dropdown menu component. |
 
-<mark style="padding: 0.25rem; color: #6b7280; background-color: #bef264;">gropdown.<span style="font-weight: 600; color: #1f2937;">Button</span></mark>
+<h3 style="padding: 0.25rem; width: fit-content; color: #6b7280; background-color: #bef264;">gropdown.<span style="font-weight: 600; color: #1f2937;">Button</span></h3>
 
 | Property | Type           | Description                                          |
 |:---------|:---------------|:-----------------------------------------------------|
 | `label`  | _string_       | The text displayed for the dropdown menu button.     |
 | `icon`   | [_ButtonIcon_] | The icon displayed next to the dropdown menu button. |
 
-<mark style="padding: 0.25rem; color: #6b7280; background-color: #bef264;">gropdown.<span style="font-weight: 600; color: #1f2937;">Item</span></mark>
+<h3 style="padding: 0.25rem; width: fit-content; color: #6b7280; background-color: #bef264;">gropdown.<span style="font-weight: 600; color: #1f2937;">Content</span></h3>
+
+None
+
+<h3 style="padding: 0.25rem; width: fit-content; color: #6b7280; background-color: #bef264;">gropdown.<span style="font-weight: 600; color: #1f2937;">Item</span></h3>
 
 | Property | Type            | Description                                                          |
 |:---------|:----------------|:---------------------------------------------------------------------|
 | `label`  | _string_        | The text displayed for the dropdown menu item.                       |
 | `opts`   | [_ItemOptions_] | The options for configuring the behavior and appearance of the item. |
+
+<h3 style="padding: 0.25rem; width: fit-content; color: #6b7280; background-color: #bef264;">gropdown.<span style="font-weight: 600; color: #1f2937;">Divider</span></h3>
+
+None
 
 ## Accessibility (A11Y)
 
