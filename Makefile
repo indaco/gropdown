@@ -12,7 +12,7 @@ EXAMPLES := \
 	_examples/custom-button-icon \
 	_examples/go-html-template \
 	_examples/icon-only-button \
-	_examples/multiple_dropdowns \
+	_examples/multiple-dropdowns \
 	_examples/positioning \
 	_examples/theming \
 
