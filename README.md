@@ -91,7 +91,7 @@ func HandleHome(w http.ResponseWriter, r *http.Request) {
   dropdownConfig := gropdown.NewConfigBuilder().WithPlacement(gropdown.Top).Build()
 
   configMap := gropdown.NewConfigMap()
-  configMap.Add("menu-1", dropdownConfig)
+  configMap.Add("demo", dropdownConfig)
   ctx := context.WithValue(r.Context(), gropdown.ConfigContextKey, configMap)
   err := Page().Render(ctx, w)
   if err != nil {
