@@ -9,8 +9,8 @@ import "github.com/a-h/templ"
 
 func GropdownJS(configMap *ConfigMap) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_GropdownJS_e3ae`,
-		Function: `function __templ_GropdownJS_e3ae(configMap){// Utility function to check if a value is null or undefined
+		Name: `__templ_GropdownJS_8d5a`,
+		Function: `function __templ_GropdownJS_8d5a(configMap){// Utility function to check if a value is null or undefined
   function isNullish(value) {
     return value === null || value === undefined;
   }
@@ -461,6 +461,11 @@ func GropdownJS(configMap *ConfigMap) templ.ComponentScript {
 
     const dropdownBtn = node.querySelector(".gdd_button")
     if (dropdownBtn != null && options?.enabled) {
+      const dropdownBtnLabel = dropdownBtn.getAttribute("aria-label").toLowerCase()
+      const menuNode = node.querySelector('[role="menu"]')
+      menuNode.setAttribute("id", ` + "`" + `dropdown-menu-${dropdownBtnLabel}` + "`" + `)
+      menuNode.setAttribute("aria-labelledby", ` + "`" + `dropdown-button-${dropdownBtnLabel}` + "`" + `)
+
       initialize()
       node.addEventListener('click', onButtonClick)
       node.addEventListener('keydown', onButtonKeydown)
@@ -553,7 +558,7 @@ func GropdownJS(configMap *ConfigMap) templ.ComponentScript {
   });
 
 }`,
-		Call:       templ.SafeScript(`__templ_GropdownJS_e3ae`, configMap),
-		CallInline: templ.SafeScriptInline(`__templ_GropdownJS_e3ae`, configMap),
+		Call:       templ.SafeScript(`__templ_GropdownJS_8d5a`, configMap),
+		CallInline: templ.SafeScriptInline(`__templ_GropdownJS_8d5a`, configMap),
 	}
 }
