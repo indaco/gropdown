@@ -28,18 +28,18 @@
   <a href="#examples">Examples</a>
 </p>
 
-A fully accessible, configurable and themeable server-rendered dropdown component for Go web applications. Built with [templ](https://github.com/a-h/templ) library for seamless integration with Go-based web frontends.
+A fully accessible, themeable, and server-rendered dropdown component for Go web applications. Built with the [templ](https://github.com/a-h/templ) library for seamless integration into Go-based frontends.
 
 ![gropdown](https://raw.githubusercontent.com/indaco/gh-assets/main/gropdown/demo.gif)
 
 ## Features
 
-- **Accessible**: Fully compliant with the [WAI-ARIA Menu Button Design Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/), to ensure accessibility for all users.
-- **No External Dependencies**: Built with native Go and the `templ` library, requiring no external dependencies.
-- **Configurable**: The component offers various configuration options to customize its behavior (e.g. positioning, open by default...)
-- **Multiple dropdown**: multiple `gropdown` components on the same page, each with its own style.
-- **Themeable**: Supports theming via CSS variables, allowing easy customization of appearance. Comes with built-in support for light and dark modes, as well as the ability to define custom themes using the `data-theme` attribute.
-- **Versatile**: Items can be buttons or links (`<a>`). When a link item is marked as _external_, a visual icon will be added to indicate it.
+- **Accessible by Design**: Fully compliant with the [WAI-ARIA Menu Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/), including proper roles, focus management, and keyboard interactions.
+- **Zero Dependencies**: Built with native Go and `templ` — no external JavaScript or CSS required.
+- **Highly Configurable**: Customize behavior such as positioning, default open state, and alignment to fit your needs.
+- **Multiple Instances**: Use several `gropdown` components on the same page, each with its own configuration and styling.
+- **Themeable via CSS Variables**: Easily style the component using CSS custom properties. Supports light and dark themes via the `data-theme` attribute and allows for custom themes.
+- **Versatile Items**: Dropdown items can be buttons or links (`<a>`). External links are automatically marked with an icon for better UX.
 
 ## Installation
 
