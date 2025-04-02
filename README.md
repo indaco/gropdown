@@ -30,6 +30,8 @@
 
 A fully accessible, configurable and themeable server-rendered dropdown component for Go web applications. Built with [templ](https://github.com/a-h/templ) library for seamless integration with Go-based web frontends.
 
+![gropdown](https://raw.githubusercontent.com/indaco/gh-assets/main/gropdown/demo.gif)
+
 ## Features
 
 - **Accessible**: Fully compliant with the [WAI-ARIA Menu Button Design Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/), to ensure accessibility for all users.
@@ -38,10 +40,6 @@ A fully accessible, configurable and themeable server-rendered dropdown componen
 - **Multiple dropdown**: multiple `gropdown` components on the same page, each with its own style.
 - **Themeable**: Supports theming via CSS variables, allowing easy customization of appearance. Comes with built-in support for light and dark modes, as well as the ability to define custom themes using the `data-theme` attribute.
 - **Versatile**: Items can be buttons or links (`<a>`). When a link item is marked as _external_, a visual icon will be added to indicate it.
-
-<div style="display: flex; justify-content: center;">
-   <img src="statics/demo.gif" alt="Image" >
-</div>
 
 ## Installation
 
